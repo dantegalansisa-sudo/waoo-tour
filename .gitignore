@@ -1,0 +1,11 @@
+# Archivos originales sueltos (las copias limpias están en /assets)
+video heros.mp4
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.log

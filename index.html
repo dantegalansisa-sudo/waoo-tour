@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WAOOO Tours and Adventures · Excursiones en Punta Cana</title>
+<meta name="description" content="Vive Punta Cana como nunca. Buggies, catamaranes, Isla Saona, delfines, snorkel y más. Reserva tus excursiones directo con tu operador local. Cancelación gratis.">
+<link rel="icon" href="assets/waoo.jpeg">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div id="chrome"></div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <video autoplay muted loop playsinline poster="assets/waoo.jpeg">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <div class="wrap">
+    <div class="hero-badge">⭐ <b>4.9/5</b> · +12.000 viajeros felices en Punta Cana</div>
+    <h1>Vive Punta Cana <em>como nunca</em> la habías soñado</h1>
+    <p class="lead">Buggies por la selva, catamaranes con barra libre, islas de postal y encuentros con delfines. Tu aventura caribeña empieza aquí.</p>
+
+    <div class="search-tabs">
+      <button class="search-tab active">🧭 Actividades</button>
+      <a class="search-tab" href="#contacto">🚐 Traslados</a>
+    </div>
+    <form class="search-panel" onsubmit="return heroSearch(event)">
+      <div class="sp-field">
+        <label>¿Qué quieres hacer?</label>
+        <input type="text" id="qInput" placeholder="Buggies, Saona, snorkel...">
+      </div>
+      <div class="sp-field">
+        <label>Categoría</label>
+        <select id="catInput"></select>
+      </div>
+      <div class="sp-field">
+        <label>Viajeros</label>
+        <select id="paxInput">
+          <option>1 persona</option><option>2 personas</option><option>3 personas</option>
+          <option>4 personas</option><option>5+ personas</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Buscar aventuras</button>
+    </form>
+
+    <div class="hero-stats">
+      <div><b>112+</b><span>Excursiones</span></div>
+      <div><b>16</b><span>Categorías</span></div>
+      <div><b>24/7</b><span>Atención local</span></div>
+      <div><b>100%</b><span>Reserva segura</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST ===================== -->
+<div class="trust"><div class="wrap" id="trust"></div></div>
+
+<!-- ===================== CATEGORIES ===================== -->
+<section class="section" id="categorias">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <div>
+        <span class="eyebrow">Explora por estilo</span>
+        <h2 class="section-title">Elige tu tipo de aventura</h2>
+      </div>
+      <a class="btn btn-outline" href="tours.html">Ver todas las categorías ${''}</a>
+    </div>
+    <div class="cat-strip reveal" id="catStrip"></div>
+  </div>
+</section>
+
+<!-- ===================== FEATURED ===================== -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <div>
+        <span class="eyebrow">No te lo pierdas</span>
+        <h2 class="section-title">Experiencias destacadas</h2>
+        <p class="section-sub">Las aventuras favoritas de nuestros viajeros en Punta Cana y alrededores.</p>
+      </div>
+      <a class="btn btn-dark" href="tours.html">Ver todas</a>
+    </div>
+    <div class="grid reveal" id="featuredGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== WHY ===================== -->
+<section class="section why" id="nosotros">
+  <div class="wrap">
+    <div class="head-row reveal" style="margin-bottom:0">
+      <div>
+        <span class="eyebrow">Por qué WAOOO</span>
+        <h2 class="section-title">Reserva con tu operador local de confianza</h2>
+        <p class="section-sub">No somos un intermediario. Somos quienes te recogen, te guían y te hacen vivir Punta Cana de verdad.</p>
+      </div>
+    </div>
+    <div class="feat-grid reveal" id="featGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== POPULAR GRID ===================== -->
+<section class="section">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <div>
+        <span class="eyebrow">Las más reservadas</span>
+        <h2 class="section-title">Aventuras populares</h2>
+        <p class="section-sub">Buggies, catamaranes e islas: lo que todos quieren vivir en el Caribe.</p>
+      </div>
+      <a class="btn btn-outline" href="tours.html">Explorar catálogo</a>
+    </div>
+    <div class="grid reveal" id="popularGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== ZONES ===================== -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <div>
+        <span class="eyebrow">Destinos</span>
+        <h2 class="section-title">Aventuras en cada rincón</h2>
+        <p class="section-sub">Desde Bávaro hasta Samaná, llegamos a los mejores destinos del país.</p>
+      </div>
+    </div>
+    <div class="zone-grid reveal" id="zoneGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="section" style="background:var(--cream)">
+  <div class="wrap">
+    <div class="head-row reveal">
+      <div>
+        <span class="eyebrow">Lo que dicen</span>
+        <h2 class="section-title">Viajeros felices</h2>
+      </div>
+    </div>
+    <div class="testi-grid reveal" id="testiGrid"></div>
+  </div>
+</section>
+
+<!-- ===================== CTA BAND ===================== -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div class="inner">
+        <div>
+          <h2>¿Listo para tu próxima aventura en Punta Cana?</h2>
+          <p>Escríbenos por WhatsApp y arma tu excursión a la medida. Respondemos al instante.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-dark btn-lg" id="ctaWa" target="_blank">Reservar por WhatsApp</a>
+          <a class="btn btn-ghost btn-lg" href="tours.html">Ver excursiones</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  bootCommon('Inicio');
+
+  /* category select in hero */
+  const catSel = document.getElementById('catInput');
+  catSel.innerHTML = '<option value="">Todas las categorías</option>' +
+    CATEGORIES.map(c=>`<option value="${c.key}">${c.label}</option>`).join('');
+
+  /* trust strip */
+  document.getElementById('trust').innerHTML = [
+    [IC.shield,'Reserva 100% segura'],
+    [IC.tag,'Mejor precio garantizado'],
+    [IC.van,'Transporte incluido*'],
+    [IC.check,'Cancelación gratis 24h'],
+    [IC.star,'+12.000 reseñas 5★'],
+  ].map(t=>`<div class="t">${t[0]}<span>${t[1]}</span></div>`).join('');
+
+  /* categories */
+  document.getElementById('catStrip').innerHTML = CATEGORIES.map(c=>`
+    <a class="cat-card" href="tours.html?cat=${c.key}">
+      <div class="cat-ic">${IC[c.icon]}</div><span>${c.label}</span>
+    </a>`).join('');
+
+  /* featured = badge unica/popular, pick 8 */
+  const featured = TOURS.filter(t=>t.badge).slice(0,8);
+  renderGrid(document.getElementById('featuredGrid'), featured);
+
+  /* popular = a curated mix */
+  const popIds = ['buggies-selva-pc','saona-vela','marinarium','dolphin-exp','catalina-pared','cocobongo-premium','parasailing-doble','monkeyland'];
+  const popular = popIds.map(id=>TOURS.find(t=>t.id===id)).filter(Boolean);
+  renderGrid(document.getElementById('popularGrid'), popular);
+
+  /* why features */
+  document.getElementById('featGrid').innerHTML = [
+    [IC.pin,'Operador 100% local','Estamos en Punta Cana. Conocemos cada playa, cada sendero y cada secreto del Caribe.'],
+    [IC.tag,'Precios directos','Sin intermediarios ni sobreprecios. Pagas lo justo por vivir lo mejor.'],
+    [IC.shield,'Seguridad ante todo','Equipo certificado, guías profesionales y seguro en todas las actividades.'],
+    [IC.wa,'Atención 24/7','Te asistimos por WhatsApp antes, durante y después de tu aventura.'],
+  ].map(f=>`<div class="feat"><div class="feat-ic">${f[0]}</div><h4>${f[1]}</h4><p>${f[2]}</p></div>`).join('');
+
+  /* zones */
+  document.getElementById('zoneGrid').innerHTML = [
+    ['Bávaro & Punta Cana','Buggies, catamaranes y playas','',''],
+    ['Isla Saona & Catalina','Islas paradisíacas','1','islas'],
+    ['Cap Cana','Lujo, golf y Scape Park','2','privados'],
+    ['Samaná','Cascadas y ballenas','3','samana'],
+  ].map((z,i)=>`<a class="zone" data-z="${z[2]}" href="tours.html${z[3]?'?cat='+z[3]:''}">
+      <div class="zone-info"><b>${z[0]}</b><span>${z[1]}</span></div></a>`).join('');
+
+  /* testimonials */
+  document.getElementById('testiGrid').innerHTML = [
+    ['Laura G.','España','¡Increíble! El tour de buggies por la selva fue pura adrenalina y el guía atentísimo. Repetiremos seguro.'],
+    ['Michael R.','USA','Saona Island was paradise. Everything organized perfectly, free bar on the catamaran. 100% recommended!'],
+    ['Familia Pérez','México','Hicimos Monkeyland con los niños y la pasamos genial. Transporte puntual y trato espectacular.'],
+  ].map(t=>`<div class="testi">
+      <div class="stars">${IC.star.repeat(5)}</div>
+      <p>"${t[2]}"</p>
+      <div class="testi-who"><div class="testi-av">${t[0][0]}</div><div><b>${t[0]}</b><span>${t[1]}</span></div></div>
+    </div>`).join('');
+
+  document.getElementById('ctaWa').href = waLink('¡Hola WAOOO! Quiero armar mi excursión en Punta Cana. ¿Me ayudan?');
+
+  /* hero search */
+  function heroSearch(e){
+    e.preventDefault();
+    const q = document.getElementById('qInput').value.trim();
+    const cat = document.getElementById('catInput').value;
+    const params = new URLSearchParams();
+    if(q) params.set('q',q);
+    if(cat) params.set('cat',cat);
+    location.href = 'tours.html'+(params.toString()?('?'+params.toString()):'');
+    return false;
+  }
+  window.heroSearch = heroSearch;
+
+  initReveal();
+</script>
+</body>
+</html>

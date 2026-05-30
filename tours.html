@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excursiones, Tours y Tickets en Punta Cana · WAOOO Tours</title>
+<meta name="description" content="Catálogo completo de excursiones en Punta Cana: buggies, catamaranes, Isla Saona, delfines, snorkel, parasailing y más. Filtra, compara y reserva.">
+<link rel="icon" href="assets/waoo.jpeg">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<div id="chrome"></div>
+
+<div class="catalog-head">
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">Inicio</a> › <span id="crumbCat">Excursiones</span></div>
+    <h1 id="catalogTitle">Punta Cana <span>· Excursiones, Tours y Tickets</span></h1>
+    <div class="filter-bar" id="filterBar"></div>
+  </div>
+</div>
+
+<div class="catalog-body">
+  <div class="wrap">
+    <div class="catalog-toolbar">
+      <div class="result-count" id="resultCount"></div>
+      <div class="sortwrap">
+        <label for="sortSel">Ordenar por:</label>
+        <select id="sortSel">
+          <option value="rel">Más relevante</option>
+          <option value="low">Precio: menor a mayor</option>
+          <option value="high">Precio: mayor a menor</option>
+          <option value="az">Nombre A–Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid" id="catalogGrid"></div>
+    <div class="empty" id="emptyState" style="display:none">
+      🔍<b>No encontramos excursiones</b>
+      <p>Prueba con otra categoría o limpia la búsqueda.</p>
+      <a class="btn btn-primary" href="tours.html" style="margin-top:18px">Ver todas las excursiones</a>
+    </div>
+  </div>
+</div>
+
+<div id="footer-slot"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  bootCommon('Excursiones');
+
+  const params = new URLSearchParams(location.search);
+  let state = {
+    cat: params.get('cat') || 'all',
+    q: params.get('q') || '',
+    sort: 'rel',
+    favOnly: location.hash === '#favoritos',
+  };
+  if(state.q) document.getElementById('hsearch').value = state.q;
+
+  /* filter chips */
+  const chips = [{key:'all',label:'Todas',icon:'combo'},{key:'fav',label:'Favoritos',icon:'heart'},...CATEGORIES];
+  function renderChips(){
+    document.getElementById('filterBar').innerHTML = chips.map(c=>{
+      const on = (c.key==='fav' && state.favOnly) || (c.key!=='fav' && !state.favOnly && state.cat===c.key);
+      return `<button class="chip${on?' active':''}" data-chip="${c.key}">${IC[c.icon]||''}${c.label}</button>`;
+    }).join('');
+    document.querySelectorAll('[data-chip]').forEach(b=>b.onclick=()=>{
+      const k = b.dataset.chip;
+      if(k==='fav'){ state.favOnly=true; }
+      else { state.favOnly=false; state.cat=k; }
+      apply();
+    });
+  }
+
+  function apply(){
+    let list = TOURS.slice();
+    if(state.favOnly){ const f=getFavs(); list=list.filter(t=>f.includes(t.id)); }
+    else if(state.cat!=='all'){ list=list.filter(t=>t.cat===state.cat); }
+    if(state.q){
+      const q=state.q.toLowerCase();
+      list=list.filter(t=>(t.name+' '+t.zone+' '+CAT_LABEL[t.cat]).toLowerCase().includes(q));
+    }
+    if(state.sort==='low') list.sort((a,b)=>a.price-b.price);
+    else if(state.sort==='high') list.sort((a,b)=>b.price-a.price);
+    else if(state.sort==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
+
+    const grid=document.getElementById('catalogGrid'), empty=document.getElementById('emptyState');
+    if(list.length){ grid.style.display='grid'; empty.style.display='none'; renderGrid(grid,list); }
+    else { grid.style.display='none'; empty.style.display='block'; grid.innerHTML=''; }
+
+    const label = state.favOnly ? 'Tus favoritos'
+      : state.cat==='all' ? 'Todas las actividades' : CAT_LABEL[state.cat];
+    document.getElementById('resultCount').innerHTML =
+      `${list.length} <span>${list.length===1?'actividad encontrada':'actividades encontradas'}${state.q?` · "${state.q}"`:''}</span>`;
+    document.getElementById('crumbCat').textContent = label;
+    document.getElementById('catalogTitle').innerHTML = state.favOnly
+      ? `Mis favoritos <span>· en Punta Cana</span>`
+      : state.cat==='all' ? `Punta Cana <span>· Excursiones, Tours y Tickets</span>`
+      : `${CAT_LABEL[state.cat]} <span>· en Punta Cana</span>`;
+    renderChips();
+  }
+
+  document.getElementById('sortSel').onchange = e=>{ state.sort=e.target.value; apply(); };
+
+  // live search from header
+  document.getElementById('hsearch').addEventListener('input', e=>{
+    state.q = e.target.value.trim(); apply();
+  });
+
+  renderChips();
+  apply();
+</script>
+</body>
+</html>
