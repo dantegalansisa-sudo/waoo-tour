@@ -34,9 +34,12 @@
 </div>
 
 <script src="assets/data.js"></script>
+<script src="assets/supabase.js"></script>
 <script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
+(async () => {
+  await sbBoot();
   bootCommon('tours');
 
   const id = new URLSearchParams(location.search).get('id');
@@ -202,6 +205,7 @@
     }
     window.scrollTo(0,0);
   }
+})();
 </script>
 </body>
 </html>

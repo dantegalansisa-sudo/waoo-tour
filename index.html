@@ -171,9 +171,12 @@
 <div id="footer-slot"></div>
 
 <script src="assets/data.js"></script>
+<script src="assets/supabase.js"></script>
 <script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
+(async () => {
+  await sbBoot();   /* catálogo en vivo desde la nube; si falla usa data.js */
   bootCommon('home');
   document.title = T.title_home;
 
@@ -255,6 +258,7 @@
   window.heroSearch = heroSearch;
 
   initReveal();
+})();
 </script>
 </body>
 </html>

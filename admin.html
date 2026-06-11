@@ -110,9 +110,10 @@ body{background:#f2efe9}
     <h1>Panel de Administración</h1>
     <p>WAOOO Tours and Adventures · Punta Cana</p>
     <form onsubmit="return doLogin(event)">
+      <input type="email" id="emailInput" placeholder="Correo" autocomplete="username" style="margin-bottom:10px">
       <input type="password" id="passInput" placeholder="Contraseña" autocomplete="current-password">
-      <div class="login-err" id="loginErr">Contraseña incorrecta</div>
-      <button class="btn btn-primary btn-block btn-lg" style="margin-top:16px" type="submit">Entrar</button>
+      <div class="login-err" id="loginErr">Correo o contraseña incorrectos</div>
+      <button class="btn btn-primary btn-block btn-lg" style="margin-top:16px" type="submit" id="loginBtn">Entrar</button>
     </form>
   </div>
 </div>
@@ -136,11 +137,12 @@ body{background:#f2efe9}
     <div class="adm-tabs">
       <button class="adm-tab active" data-tab="tours" onclick="showTab('tours')">🎟️ Tours</button>
       <button class="adm-tab" data-tab="contact" onclick="showTab('contact')">📞 Contacto y marca</button>
-      <button class="adm-tab" data-tab="publish" onclick="showTab('publish')">🚀 Publicar</button>
+      <button class="adm-tab" data-tab="publish" onclick="showTab('publish')">💾 Respaldo</button>
     </div>
 
     <!-- TAB TOURS -->
     <div id="tab-tours">
+      <div id="seedBanner"></div>
       <div class="stat-grid">
         <div class="stat-box"><b id="statTotal">0</b><span>Tours activos</span></div>
         <div class="stat-box"><b id="statAvg">$0</b><span>Precio promedio</span></div>
@@ -187,20 +189,14 @@ body{background:#f2efe9}
       </div>
     </div>
 
-    <!-- TAB PUBLISH -->
+    <!-- TAB RESPALDO -->
     <div id="tab-publish" class="hidden">
       <div class="adm-card">
-        <h2>Publicar cambios</h2>
+        <h2>Respaldo del catálogo</h2>
         <div class="pub-stat" id="pubStat"></div>
-        <p class="hint">Tus cambios ya se ven <b>en este navegador</b>. Para que los vean todos los visitantes de la web, sigue estos pasos:</p>
-        <ol class="steps">
-          <li>Pulsa <b>"Descargar publicación"</b> — se descarga UN solo archivo ZIP con todos tus cambios y fotos.</li>
-          <li>Envía ese ZIP a tu desarrollador por WhatsApp o correo. (Él lo sube a la web en minutos.)</li>
-          <li>Cuando te confirme que la web está actualizada, pulsa <b>"Descartar cambios locales"</b> para liberar espacio y seguir trabajando.</li>
-        </ol>
+        <p class="hint">Tus cambios se publican <b>automáticamente</b> en la web — no tienes que hacer nada más. Aun así, es buena idea descargar un respaldo de vez en cuando por seguridad.</p>
         <div class="modal-actions" style="justify-content:flex-start;flex-wrap:wrap">
-          <button class="btn btn-primary btn-lg" onclick="downloadPublication()">⬇️ Descargar publicación (ZIP)</button>
-          <button class="btn btn-outline" style="color:#e23b3b;border-color:#f3c1c1" onclick="discardLocal()">🗑️ Descartar cambios locales</button>
+          <button class="btn btn-primary btn-lg" onclick="downloadPublication()">⬇️ Descargar respaldo (ZIP)</button>
         </div>
       </div>
     </div>
@@ -282,6 +278,7 @@ body{background:#f2efe9}
 </div>
 
 <script src="assets/data.js"></script>
+<script src="assets/supabase.js"></script>
 <script src="assets/admin.js"></script>
 </body>
 </html>

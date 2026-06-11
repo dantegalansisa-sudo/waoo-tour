@@ -45,9 +45,12 @@
 <div id="footer-slot"></div>
 
 <script src="assets/data.js"></script>
+<script src="assets/supabase.js"></script>
 <script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
+(async () => {
+  await sbBoot();
   bootCommon('tours');
   document.title = T.title_catalog;
 
@@ -113,6 +116,7 @@
 
   renderChips();
   apply();
+})();
 </script>
 </body>
 </html>

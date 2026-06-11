@@ -1,24 +1,14 @@
 /* ============================================================
-   WAOOO Tours — Panel de administración
-   Los cambios se guardan en localStorage (vista previa inmediata
-   en este navegador) y se publican descargando assets/data.js.
+   WAOOO Tours — Panel de administración (modo nube / Supabase)
+   Los cambios se guardan directo en la base de datos y se ven
+   AL INSTANTE en la web pública. Las fotos van a Supabase Storage.
    ============================================================ */
 
-const ADMIN_PASS = 'waooo2026';            // ⚠️ cámbiala antes de entregar
-const LS_KEY = 'waooo_admin_data';
-const SS_KEY = 'waooo_admin_ok';
+const TK_KEY = 'waooo_sb_token';
 
 /* ---------- estado ---------- */
-/* data.js ya aplicó el override de localStorage, así que TOURS y WAOOO
-   reflejan los últimos cambios guardados. */
-let DB = {
-  tours: JSON.parse(JSON.stringify(TOURS)),
-  settings: {
-    phone: WAOOO.phone, phoneDisplay: WAOOO.phoneDisplay,
-    wa: WAOOO.wa, waDisplay: WAOOO.waDisplay,
-    email: WAOOO.email, facebook: WAOOO.facebook,
-  },
-};
+let DB = { tours: [], settings: {} };
+let TOKEN = null;
 let editingId = null;
 
 /* ---------- helpers ---------- */
@@ -31,7 +21,6 @@ function fmtDisplay(digits){
   if(d.length===10) return `+1 ${d.slice(0,3)}-${d.slice(3,6)}-${d.slice(6)}`;
   return '+'+d;
 }
-
 function slugify(s){
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')
     .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40) || 'tour';
@@ -41,31 +30,90 @@ function uniqueId(base){
   while(DB.tours.some(t=>t.id===id)) id = base+'-'+(n++);
   return id;
 }
-
-function persist(){
-  try{
-    localStorage.setItem(LS_KEY, JSON.stringify({tours: DB.tours, settings: DB.settings, updated: Date.now()}));
-  }catch(e){
-    alert('⚠️ La memoria del navegador está llena de fotos.\n\nVe a la pestaña PUBLICAR, descarga la publicación (ZIP) y envíala a tu desarrollador. Cuando la web esté actualizada, pulsa "Descartar cambios locales" para liberar espacio y seguir agregando fotos.');
-  }
-  renderStats(); renderPubStat();
-}
-
 let toastT;
 function toast(msg){
   let el = document.querySelector('.toast');
   if(!el){ el = document.createElement('div'); el.className='toast'; document.body.appendChild(el); }
   el.innerHTML = '<span>'+msg+'</span>';
   el.classList.add('show'); clearTimeout(toastT);
-  toastT = setTimeout(()=>el.classList.remove('show'), 2400);
+  toastT = setTimeout(()=>el.classList.remove('show'), 2600);
+}
+
+/* ============================================================
+   NUBE: autenticación y operaciones
+   ============================================================ */
+async function sbAuth(email, password){
+  const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+    method:'POST',
+    headers:{apikey:SB_KEY, 'Content-Type':'application/json'},
+    body: JSON.stringify({email, password}),
+  });
+  if(!r.ok) return null;
+  const j = await r.json();
+  return j.access_token || null;
+}
+
+function authHeaders(extra){
+  return Object.assign({apikey:SB_KEY, Authorization:'Bearer '+TOKEN, 'Content-Type':'application/json'}, extra||{});
+}
+
+function handleAuthFail(r){
+  if(r.status===401 || r.status===403){
+    toast('⚠️ Tu sesión expiró. Vuelve a entrar.');
+    setTimeout(logout, 1800);
+    return true;
+  }
+  return false;
+}
+
+/* sube/actualiza TODOS los tours con su posición (1 sola petición) */
+async function sbSyncTours(){
+  const body = DB.tours.map((t,i)=>({id:t.id, data:t, pos:i}));
+  const r = await fetch(`${SB_URL}/rest/v1/tours`, {
+    method:'POST',
+    headers: authHeaders({Prefer:'resolution=merge-duplicates'}),
+    body: JSON.stringify(body),
+  });
+  if(!r.ok && !handleAuthFail(r)) throw new Error('sync '+r.status);
+  return r.ok;
+}
+async function sbDeleteTour(id){
+  const r = await fetch(`${SB_URL}/rest/v1/tours?id=eq.${encodeURIComponent(id)}`, {
+    method:'DELETE', headers: authHeaders(),
+  });
+  if(!r.ok && !handleAuthFail(r)) throw new Error('delete '+r.status);
+  return r.ok;
+}
+async function sbSaveSettings(){
+  const r = await fetch(`${SB_URL}/rest/v1/settings`, {
+    method:'POST',
+    headers: authHeaders({Prefer:'resolution=merge-duplicates'}),
+    body: JSON.stringify([{id:1, data: DB.settings}]),
+  });
+  if(!r.ok && !handleAuthFail(r)) throw new Error('settings '+r.status);
+  return r.ok;
+}
+async function sbUploadPhoto(name, dataUrl){
+  const blob = await (await fetch(dataUrl)).blob();
+  const r = await fetch(`${SB_URL}/storage/v1/object/fotos/${name}`, {
+    method:'POST',
+    headers:{apikey:SB_KEY, Authorization:'Bearer '+TOKEN, 'x-upsert':'true', 'Content-Type':'image/jpeg'},
+    body: blob,
+  });
+  if(!r.ok && !handleAuthFail(r)) throw new Error('upload '+r.status);
+  return `${SB_URL}/storage/v1/object/public/fotos/${name}`;
 }
 
 /* ---------- login ---------- */
-function doLogin(e){
+async function doLogin(e){
   e.preventDefault();
-  const v = $('passInput').value;
-  if(v === ADMIN_PASS){
-    sessionStorage.setItem(SS_KEY,'1');
+  const btn = $('loginBtn');
+  btn.textContent = 'Entrando...'; btn.disabled = true;
+  const token = await sbAuth($('emailInput').value.trim(), $('passInput').value).catch(()=>null);
+  btn.textContent = 'Entrar'; btn.disabled = false;
+  if(token){
+    TOKEN = token;
+    sessionStorage.setItem(TK_KEY, token);
     showPanel();
   } else {
     const box = document.querySelector('.login-box');
@@ -74,12 +122,12 @@ function doLogin(e){
   }
   return false;
 }
-function logout(){ sessionStorage.removeItem(SS_KEY); location.reload(); }
+function logout(){ sessionStorage.removeItem(TK_KEY); location.reload(); }
 
-function showPanel(){
+async function showPanel(){
   $('loginView').classList.add('hidden');
   $('panelView').classList.remove('hidden');
-  initPanel();
+  await initPanel();
 }
 
 /* ---------- tabs ---------- */
@@ -90,20 +138,50 @@ function showTab(name){
   });
 }
 
-/* ---------- panel ---------- */
-function initPanel(){
-  /* selects de categoría */
+/* ---------- arranque del panel ---------- */
+async function initPanel(){
   const opts = CATEGORIES.map(c=>`<option value="${c.key}">${c.label}</option>`).join('');
   $('admCat').innerHTML = '<option value="">Todas las categorías</option>'+opts;
   $('fCat').innerHTML = opts;
 
-  /* settings */
+  /* carga desde la nube */
+  const res = await sbLoadAll();
+  if(res && res.tours.length){
+    DB.tours = res.tours.map(r=>r.data);
+    $('seedBanner').innerHTML = '';
+  } else {
+    /* nube vacía: usar el catálogo local y ofrecer subirlo */
+    DB.tours = JSON.parse(JSON.stringify(TOURS));
+    $('seedBanner').innerHTML = `<div class="adm-card" style="border-color:var(--orange);background:#fff8f2">
+      <h2>☁️ Primer paso: subir el catálogo a la nube</h2>
+      <p class="hint">La base de datos está vacía. Sube los ${DB.tours.length} tours actuales para activar la publicación automática.</p>
+      <button class="btn btn-primary btn-lg" onclick="seedCloud()">⬆️ Subir catálogo inicial</button>
+    </div>`;
+  }
+  DB.settings = (res && res.settings) ? res.settings : {
+    phone: WAOOO.phone, phoneDisplay: WAOOO.phoneDisplay,
+    wa: WAOOO.wa, waDisplay: WAOOO.waDisplay,
+    email: WAOOO.email, facebook: WAOOO.facebook,
+  };
+
   $('sPhone').value = DB.settings.phone;
   $('sWa').value = DB.settings.wa;
   $('sEmail').value = DB.settings.email;
   $('sFb').value = DB.settings.facebook;
 
   renderList(); renderStats(); renderPubStat();
+}
+
+async function seedCloud(){
+  toast('⏳ Subiendo catálogo...');
+  try{
+    await sbSyncTours();
+    await sbSaveSettings();
+    localStorage.removeItem('waooo_admin_data');   // ya no se usa el modo local
+    $('seedBanner').innerHTML = '';
+    toast('✅ ¡Catálogo en la nube! Publicación automática activada');
+    renderPubStat();
+  }catch(e){ toast('❌ No se pudo subir. Revisa tu conexión.'); }
 }
 
 function renderStats(){
@@ -156,9 +234,8 @@ function fileToCompressed(file, maxW = 1000, quality = 0.72){
   });
 }
 
-/* estado de fotos del formulario */
-let fImageData = null;     // foto principal (dataURL o ruta existente)
-let fGalleryData = [];     // fotos extra
+let fImageData = null;
+let fGalleryData = [];
 
 function renderFormPhotos(){
   const box = $('imgPrev');
@@ -207,14 +284,29 @@ function openForm(id){
 }
 function closeForm(){ $('formModal').classList.remove('open'); editingId=null; }
 
-function saveForm(){
+async function saveForm(){
   const name = $('fName').value.trim();
   const price = parseFloat(String($('fPrice').value).replace(',','.'));
   if(!name){ toast('⚠️ Escribe el nombre del tour'); return; }
   if(!(price>0)){ toast('⚠️ Pon un precio válido'); return; }
 
+  const id = editingId || uniqueId(slugify(name));
+  toast('⏳ Guardando...');
+
+  /* sube las fotos nuevas (base64) a Supabase Storage */
+  try{
+    if(fImageData && fImageData.startsWith('data:')){
+      fImageData = await sbUploadPhoto(`${id}-${Date.now()}.jpg`, fImageData);
+    }
+    for(let i=0;i<fGalleryData.length;i++){
+      if(fGalleryData[i] && fGalleryData[i].startsWith('data:')){
+        fGalleryData[i] = await sbUploadPhoto(`${id}-${Date.now()}-${i+2}.jpg`, fGalleryData[i]);
+      }
+    }
+  }catch(e){ toast('❌ No se pudieron subir las fotos. Intenta de nuevo.'); return; }
+
   const data = {
-    name,
+    id, name,
     price: Math.round(price*100)/100,
     cat: $('fCat').value,
     zone: $('fZone').value.trim() || 'Punta Cana',
@@ -228,25 +320,32 @@ function saveForm(){
 
   if(editingId){
     const i = DB.tours.findIndex(t=>t.id===editingId);
-    DB.tours[i] = Object.assign({id: editingId}, data);
-    toast('✅ Tour actualizado');
+    DB.tours[i] = data;
   } else {
-    DB.tours.unshift(Object.assign({id: uniqueId(slugify(name))}, data));
-    toast('✅ Tour creado');
+    DB.tours.unshift(data);
   }
-  persist(); renderList(); closeForm();
+
+  try{
+    await sbSyncTours();
+    toast(editingId ? '✅ Tour actualizado — ya está en vivo' : '✅ Tour creado — ya está en vivo');
+  }catch(e){ toast('❌ No se pudo guardar en la nube. Revisa tu conexión.'); }
+  renderList(); renderStats(); closeForm();
 }
 
-function delTour(id){
+async function delTour(id){
   const t = DB.tours.find(x=>x.id===id);
-  if(!confirm(`¿Eliminar "${t.name}"?\n\nPodrás recuperarlo descartando los cambios locales antes de publicar.`)) return;
+  if(!confirm(`¿Eliminar "${t.name}" de la web?`)) return;
   DB.tours = DB.tours.filter(x=>x.id!==id);
-  persist(); renderList();
-  toast('🗑️ Tour eliminado');
+  try{
+    await sbDeleteTour(id);
+    await sbSyncTours();
+    toast('🗑️ Tour eliminado de la web');
+  }catch(e){ toast('❌ No se pudo eliminar. Revisa tu conexión.'); }
+  renderList(); renderStats();
 }
 
 /* ---------- settings ---------- */
-function saveSettings(){
+async function saveSettings(){
   const phone = $('sPhone').value.replace(/\D/g,'');
   const wa = $('sWa').value.replace(/\D/g,'');
   const email = $('sEmail').value.trim();
@@ -258,21 +357,17 @@ function saveSettings(){
     email: email || DB.settings.email,
     facebook: fb || DB.settings.facebook,
   };
-  persist();
-  toast('✅ Datos de contacto guardados');
+  try{
+    await sbSaveSettings();
+    toast('✅ Datos guardados — ya están en vivo');
+  }catch(e){ toast('❌ No se pudo guardar. Revisa tu conexión.'); }
 }
 
-/* ---------- publicar ---------- */
+/* ---------- respaldo (ZIP) ---------- */
 function renderPubStat(){
-  const raw = localStorage.getItem(LS_KEY);
-  const ov = JSON.parse(raw||'null');
-  const kb = raw ? Math.round(raw.length/1024) : 0;
-  $('pubStat').innerHTML = ov
-    ? `📝 Tienes <b>cambios locales</b> guardados (${new Date(ov.updated).toLocaleString('es-DO')} · ${kb>1024?(kb/1024).toFixed(1)+' MB':kb+' KB'}). Este navegador ya los muestra; el resto del mundo los verá cuando publiques.`
-    : `✅ No hay cambios locales pendientes. La web pública está sincronizada con lo que ves.`;
+  $('pubStat').innerHTML = `☁️ Conectado a la nube. Cada cambio que guardas se publica <b>al instante</b> en la web.`;
 }
 
-/* --- mini generador de ZIP (sin compresión; las fotos ya son JPEG) --- */
 const CRC_TABLE = (()=>{ const t=new Uint32Array(256);
   for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c = c&1 ? 0xEDB88320^(c>>>1) : c>>>1; t[n]=c>>>0; }
   return t; })();
@@ -310,45 +405,12 @@ function zipStore(files){
   return new Blob([...parts, ...central, new Uint8Array(end.buffer)], {type:'application/zip'});
 }
 
-function dataUrlToBytes(durl){
-  const bin = atob(durl.split(',')[1]);
-  const u8 = new Uint8Array(bin.length);
-  for(let i=0;i<bin.length;i++) u8[i]=bin.charCodeAt(i);
-  return u8;
-}
-
-/* convierte las fotos subidas (base64) en archivos assets/fotos/... */
-function buildPublication(){
-  const photos = [];
-  const tours = DB.tours.map(t=>{
-    const c = Object.assign({}, t);
-    if(c.image && c.image.startsWith('data:')){
-      const p = `assets/fotos/${c.id}.jpg`;
-      photos.push({name:p, data:dataUrlToBytes(c.image)});
-      c.image = p;
-    }
-    if(Array.isArray(c.gallery)){
-      c.gallery = c.gallery.map((g,i)=>{
-        if(g && g.startsWith('data:')){
-          const p = `assets/fotos/${c.id}-${i+2}.jpg`;
-          photos.push({name:p, data:dataUrlToBytes(g)});
-          return p;
-        }
-        return g;
-      }).filter(Boolean);
-      if(!c.gallery.length) delete c.gallery;
-    }
-    return c;
-  });
-  return {tours, photos};
-}
-
 function genDataJS(tours){
   const w = Object.assign({}, WAOOO, DB.settings);
   const tourLines = tours.map(t=>'  '+JSON.stringify(t)).join(',\n');
   return `/* ============================================================
    WAOOO Tours and Adventures — Punta Cana
-   Catálogo de excursiones (generado desde el panel admin)
+   Catálogo de excursiones (respaldo generado desde el panel admin)
    ============================================================ */
 
 const WAOOO = ${JSON.stringify(w, null, 2)};
@@ -367,11 +429,7 @@ const CAT_BLURB = ${JSON.stringify(CAT_BLURB, null, 2)};
 
 const INCLUDES = ${JSON.stringify(INCLUDES, null, 2)};
 
-/* ============================================================
-   Cambios locales del panel admin (vista previa en este navegador).
-   Para publicarlos a todo el mundo: panel admin → Publicar → descargar
-   data.js y reemplazar este archivo en el repositorio.
-   ============================================================ */
+/* Cambios locales del panel admin (modo sin nube) */
 (function(){
   try{
     const ov = JSON.parse(localStorage.getItem('waooo_admin_data') || 'null');
@@ -388,43 +446,32 @@ const INCLUDES = ${JSON.stringify(INCLUDES, null, 2)};
 }
 
 function downloadPublication(){
-  const {tours, photos} = buildPublication();
   const enc = new TextEncoder();
-  const leeme = `WAOOO Tours — Publicación generada desde el panel admin
-========================================================
+  const leeme = `WAOOO Tours — Respaldo del catálogo
+====================================
 Fecha: ${new Date().toLocaleString('es-DO')}
-Tours: ${tours.length} · Fotos nuevas: ${photos.length}
+Tours: ${DB.tours.length}
 
-Este paquete contiene:
-  assets/data.js     -> catálogo actualizado (precios, tours, contactos)
-  assets/fotos/...   -> fotos nuevas subidas desde el panel
+Este respaldo contiene assets/data.js con el catálogo completo.
+Las fotos están seguras en la nube (Supabase Storage).
 
-CÓMO PUBLICAR:
-1) Copia TODO el contenido de este ZIP dentro del proyecto,
-   reemplazando assets/data.js y agregando las fotos nuevas.
-2) Sube los cambios a GitHub (commit + push).
-3) Vercel actualiza la web automáticamente en 1-2 minutos.
+Si algún día hiciera falta restaurar: reemplazar assets/data.js
+en el proyecto con el archivo de este ZIP.
 `;
   const files = [
     {name:'LEEME.txt', data: enc.encode(leeme)},
-    {name:'assets/data.js', data: enc.encode(genDataJS(tours))},
-    ...photos,
+    {name:'assets/data.js', data: enc.encode(genDataJS(DB.tours))},
   ];
   const blob = zipStore(files);
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'waooo-publicacion.zip';
+  a.download = 'waooo-respaldo.zip';
   a.click();
   URL.revokeObjectURL(a.href);
-  toast(`⬇️ ZIP descargado (${tours.length} tours, ${photos.length} fotos)`);
-}
-
-function discardLocal(){
-  if(!confirm('¿Descartar TODOS los cambios locales y volver a los datos publicados?')) return;
-  localStorage.removeItem(LS_KEY);
-  location.reload();
+  toast('⬇️ Respaldo descargado');
 }
 
 /* ---------- boot ---------- */
-if(sessionStorage.getItem(SS_KEY)==='1') showPanel();
-else $('passInput') && setTimeout(()=>$('passInput').focus(), 100);
+TOKEN = sessionStorage.getItem(TK_KEY);
+if(TOKEN) showPanel();
+else $('passInput') && setTimeout(()=>$('emailInput').focus(), 100);
