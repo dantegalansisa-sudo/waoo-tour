@@ -65,7 +65,7 @@ function updateFavCount(){
 /* ---------- helpers ---------- */
 const money = n => '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const tourUrl = id => 'tour.html?id='+id;
-function waLink(text){ return 'https://wa.me/'+WAOOO.phone+'?text='+encodeURIComponent(text); }
+function waLink(text){ return 'https://wa.me/'+WAOOO.wa+'?text='+encodeURIComponent(text); }
 
 function placeholder(t){
   const g = CAT_PH[t.cat] ?? 0;
@@ -77,13 +77,13 @@ function placeholder(t){
 }
 
 /* ---------- card ---------- */
-function cardHTML(t){
+function cardHTML(t, i = 0){
   const fav = getFavs().includes(t.id) ? ' on':'';
   const badge = t.badge ? `<span class="badge ${t.badge}">${BADGE[t.badge]}</span>`:'';
   const media = t.image
     ? `<img src="${t.image}" alt="${t.name}" loading="lazy">`
     : placeholder(t);
-  return `<article class="card">
+  return `<article class="card" style="--i:${Math.min(i,11)}">
     <div class="card-media">
       ${media}
       ${badge}
@@ -103,7 +103,7 @@ function cardHTML(t){
     </div>
   </article>`;
 }
-function renderGrid(el, list){ el.innerHTML = list.map(cardHTML).join(''); }
+function renderGrid(el, list){ el.innerHTML = list.map((t,i)=>cardHTML(t,i)).join(''); }
 
 /* ---------- toast ---------- */
 let toastT;
@@ -174,8 +174,8 @@ function buildFooter(){
         <a class="logo" href="index.html"><img src="assets/waoo.jpeg" alt="WAOOO" style="height:50px"><span><b style="color:#fff">WA<span style="color:var(--orange)">OOO</span></b><small>Tours · Punta Cana</small></span></a>
         <p class="about">Tu operador local de aventuras en Punta Cana. Buggies, catamaranes, islas paradisíacas y mucho más, con reserva directa y los mejores precios.</p>
         <div class="foot-soc">
-          <a href="#" aria-label="Facebook">${IC.fb}</a>
-          <a href="#" aria-label="Instagram">${IC.ig}</a>
+          <a href="${WAOOO.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${IC.fb}</a>
+          <a href="#" aria-label="Instagram (próximamente)">${IC.ig}</a>
           <a href="#" aria-label="TikTok">${IC.tt}</a>
           <a href="${waLink('¡Hola WAOOO!')}" target="_blank" aria-label="WhatsApp">${IC.wa}</a>
         </div>
@@ -195,7 +195,9 @@ function buildFooter(){
         <ul class="foot-contact">
           <li>${IC.pin}<span>Punta Cana, La Altagracia,<br>República Dominicana</span></li>
           <li>${IC.phone}<a href="tel:+${WAOOO.phone}">${WAOOO.phoneDisplay}</a></li>
+          <li>${IC.wa}<a href="https://wa.me/${WAOOO.wa}" target="_blank">WhatsApp: ${WAOOO.waDisplay}</a></li>
           <li>${IC.mail}<a href="mailto:${WAOOO.email}">${WAOOO.email}</a></li>
+          <li>${IC.fb}<a href="${WAOOO.facebook}" target="_blank" rel="noopener">Síguenos en Facebook</a></li>
         </ul>
         <a class="btn btn-wa" style="margin-top:8px" target="_blank" href="${waLink('¡Hola WAOOO! Quiero reservar.')}">${IC.wa} Escríbenos</a>
       </div>

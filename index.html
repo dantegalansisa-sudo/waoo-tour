@@ -45,16 +45,25 @@
     </form>
 
     <div class="hero-stats">
-      <div><b>112+</b><span>Excursiones</span></div>
-      <div><b>16</b><span>Categorías</span></div>
+      <div><b data-count="111" data-suffix="+">0+</b><span>Excursiones</span></div>
+      <div><b data-count="16">0</b><span>Categorías</span></div>
       <div><b>24/7</b><span>Atención local</span></div>
-      <div><b>100%</b><span>Reserva segura</span></div>
+      <div><b data-count="100" data-suffix="%">0%</b><span>Reserva segura</span></div>
     </div>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+      <path class="w1" d="M0,42 C240,88 480,2 720,32 C960,62 1200,12 1440,52 L1440,90 L0,90 Z" fill="#ffffff" opacity=".45"/>
+      <path d="M0,62 C260,24 520,82 780,56 C1040,30 1240,72 1440,44 L1440,90 L0,90 Z" fill="#ffffff"/>
+    </svg>
   </div>
 </section>
 
 <!-- ===================== TRUST ===================== -->
 <div class="trust"><div class="wrap" id="trust"></div></div>
+
+<!-- ===================== MARQUEE ===================== -->
+<div class="marquee" aria-hidden="true"><div class="marquee-track" id="mqTrack"></div></div>
 
 <!-- ===================== CATEGORIES ===================== -->
 <section class="section" id="categorias">
@@ -224,6 +233,23 @@
     </div>`).join('');
 
   document.getElementById('ctaWa').href = waLink('¡Hola WAOOO! Quiero armar mi excursión en Punta Cana. ¿Me ayudan?');
+
+  /* marquee */
+  const mq = ['🌴 PUNTA CANA','🛥️ CATAMARÁN','🏝️ ISLA SAONA','🐬 DELFINES','🏎️ BUGGIES','🤿 SNORKEL','🪂 PARASAILING','🐎 CABALLOS','🎉 COCO BONGO','🌅 SAMANÁ'];
+  document.getElementById('mqTrack').innerHTML = mq.concat(mq).map(x=>`<span>${x}</span>`).join('');
+
+  /* contadores animados del hero */
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target = +el.dataset.count, suf = el.dataset.suffix || '';
+    const t0 = performance.now(), dur = 1700;
+    function tick(now){
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * e) + suf;
+      if(p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
 
   /* hero search */
   function heroSearch(e){

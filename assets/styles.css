@@ -421,3 +421,93 @@ ul{margin:0;padding:0;list-style:none}
 
 /* fade-in load */
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   ANIMATION LAYER — sitio vivo y divertido
+   ============================================================ */
+
+/* tarjetas: entrada escalonada (backwards = no rompe el hover) */
+@keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.96)}}
+.grid .card{animation:cardIn .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0)*60ms)}
+
+/* texto degradado del hero: shimmer continuo */
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero h1 em{background-size:220% 220%;animation:gradShift 5s ease-in-out infinite}
+
+/* flotación suave */
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hero-badge{animation:floatY 4.5s ease-in-out infinite}
+
+/* botones primarios: destello al pasar */
+.btn-primary{position:relative;overflow:hidden}
+.btn-primary::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg)}
+.btn-primary:hover::after{left:130%;transition:left .55s ease}
+
+/* iconos de categoría: wiggle + se encienden */
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg) scale(1.08)}60%{transform:rotate(8deg) scale(1.05)}}
+.cat-ic{transition:.25s}
+.cat-card:hover .cat-ic{animation:wiggle .5s ease;background:var(--grad-sunset);color:#fff}
+
+/* corazón de favoritos: pop */
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-8deg)}100%{transform:scale(1)}}
+.fav-btn.on{animation:pop .35s ease}
+
+/* placeholders: gradiente respirando */
+.ph::before{background-size:180% 180%;animation:gradShift 7s ease-in-out infinite}
+
+/* features (por qué WAOOO): icono baila */
+.feat:hover .feat-ic{animation:wiggle .5s ease}
+
+/* zonas: zoom del fondo */
+.zone::before{transition:transform .6s ease}
+.zone:hover::before{transform:scale(1.08)}
+
+/* testimonios: levitan con tilt */
+.testi{transition:.3s ease}
+.testi:hover{transform:translateY(-6px) rotate(-.7deg);box-shadow:var(--shadow)}
+.testi:nth-child(2):hover{transform:translateY(-6px) rotate(.7deg)}
+
+/* trust strip: iconos saludan */
+.trust .t svg{transition:.25s}
+.trust .t:hover svg{transform:scale(1.25) rotate(-8deg)}
+
+/* logo: ligero bounce al hover */
+.logo img{transition:.3s cubic-bezier(.34,1.56,.64,1)}
+.logo:hover img{transform:rotate(-6deg) scale(1.08)}
+
+/* ===== MARQUEE — cinta de aventuras ===== */
+.marquee{overflow:hidden;background:var(--grad-sunset);transform:rotate(-1.1deg) scale(1.02);
+  margin:34px -14px 6px;box-shadow:var(--shadow-sm)}
+.marquee-track{display:inline-flex;gap:48px;padding:13px 24px;white-space:nowrap;
+  animation:marquee 32s linear infinite;will-change:transform}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{color:#fff;font-family:'Bricolage Grotesque';font-weight:800;
+  font-size:1.02rem;letter-spacing:.14em}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* ===== OLA al pie del hero ===== */
+.hero-wave{position:absolute;left:0;right:0;bottom:-1px;z-index:2;pointer-events:none}
+.hero-wave svg{display:block;width:100%;height:72px}
+.hero-wave .w1{animation:floatY 6s ease-in-out infinite}
+
+/* drawer móvil: links entran en cascada */
+@keyframes drawIn{from{opacity:0;transform:translateX(28px)}}
+.drawer.open .drawer-panel a{animation:drawIn .4s cubic-bezier(.2,.7,.2,1) backwards}
+.drawer.open .drawer-panel a:nth-child(2){animation-delay:.04s}
+.drawer.open .drawer-panel a:nth-child(3){animation-delay:.09s}
+.drawer.open .drawer-panel a:nth-child(4){animation-delay:.14s}
+.drawer.open .drawer-panel a:nth-child(5){animation-delay:.19s}
+.drawer.open .drawer-panel a:nth-child(6){animation-delay:.24s}
+.drawer.open .drawer-panel a:nth-child(7){animation-delay:.3s}
+
+/* CTA band: blob respirando */
+@keyframes blobPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+.cta-band::before{animation:blobPulse 7s ease-in-out infinite}
+.why::before{animation:blobPulse 9s ease-in-out infinite}
+
+/* accesibilidad: respeta reduce-motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}

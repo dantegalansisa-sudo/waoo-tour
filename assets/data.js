@@ -4,9 +4,12 @@
    ============================================================ */
 
 const WAOOO = {
-  phone: "18294312369",
+  phone: "18294312369",            // llamadas
   phoneDisplay: "+1 829-431-2369",
-  email: "reservas@waooopuntacana.com",
+  wa: "18296318364",               // WhatsApp oficial
+  waDisplay: "+1 829-631-8364",
+  email: "waoooinfotours1727@gmail.com",
+  facebook: "https://www.facebook.com/profile.php?id=100054507609021",
   brand: "WAOOO Tours and Adventures",
   location: "Punta Cana, República Dominicana",
 };

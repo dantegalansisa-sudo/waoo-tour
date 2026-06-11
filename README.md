@@ -42,8 +42,11 @@ assets/
 
 - Reemplazar los placeholders de marca por fotos reales de cada tour
   (basta con añadir `image: "ruta/foto.jpg"` a cada objeto en `assets/data.js`)
-- Redes sociales, email y dominio definitivos
+- Instagram (aún no creado) y dominio definitivo
+- Panel de administración para gestionar tours, precios y fotos
 
 ---
 
-📞 **Contacto:** +1 829-431-2369 · Punta Cana, República Dominicana
+📞 **Llamadas:** +1 829-431-2369 · 💬 **WhatsApp:** +1 829-631-8364
+📧 waoooinfotours1727@gmail.com · 📘 [Facebook](https://www.facebook.com/profile.php?id=100054507609021)
+📍 Punta Cana, República Dominicana
