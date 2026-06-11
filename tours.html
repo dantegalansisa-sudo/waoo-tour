@@ -13,7 +13,7 @@
 
 <div class="catalog-head">
   <div class="wrap">
-    <div class="crumb"><a href="index.html">Inicio</a> › <span id="crumbCat">Excursiones</span></div>
+    <div class="crumb"><a href="index.html" data-i18n="crumb_home">Inicio</a> › <span id="crumbCat">Excursiones</span></div>
     <h1 id="catalogTitle">Punta Cana <span>· Excursiones, Tours y Tickets</span></h1>
     <div class="filter-bar" id="filterBar"></div>
   </div>
@@ -24,20 +24,20 @@
     <div class="catalog-toolbar">
       <div class="result-count" id="resultCount"></div>
       <div class="sortwrap">
-        <label for="sortSel">Ordenar por:</label>
+        <label for="sortSel" data-i18n="sort_label">Ordenar por:</label>
         <select id="sortSel">
-          <option value="rel">Más relevante</option>
-          <option value="low">Precio: menor a mayor</option>
-          <option value="high">Precio: mayor a menor</option>
-          <option value="az">Nombre A–Z</option>
+          <option value="rel" data-i18n="sort_rel">Más relevante</option>
+          <option value="low" data-i18n="sort_low">Precio: menor a mayor</option>
+          <option value="high" data-i18n="sort_high">Precio: mayor a menor</option>
+          <option value="az" data-i18n="sort_az">Nombre A–Z</option>
         </select>
       </div>
     </div>
     <div class="grid" id="catalogGrid"></div>
     <div class="empty" id="emptyState" style="display:none">
-      🔍<b>No encontramos excursiones</b>
-      <p>Prueba con otra categoría o limpia la búsqueda.</p>
-      <a class="btn btn-primary" href="tours.html" style="margin-top:18px">Ver todas las excursiones</a>
+      🔍<b data-i18n="empty_t">No encontramos excursiones</b>
+      <p data-i18n="empty_p">Prueba con otra categoría o limpia la búsqueda.</p>
+      <a class="btn btn-primary" href="tours.html" style="margin-top:18px" data-i18n="empty_btn">Ver todas las excursiones</a>
     </div>
   </div>
 </div>
@@ -45,9 +45,11 @@
 <div id="footer-slot"></div>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  bootCommon('Excursiones');
+  bootCommon('tours');
+  document.title = T.title_catalog;
 
   const params = new URLSearchParams(location.search);
   let state = {
@@ -59,7 +61,8 @@
   if(state.q) document.getElementById('hsearch').value = state.q;
 
   /* filter chips */
-  const chips = [{key:'all',label:'Todas',icon:'combo'},{key:'fav',label:'Favoritos',icon:'heart'},...CATEGORIES];
+  const chips = [{key:'all',label:T.chip_all,icon:'combo'},{key:'fav',label:T.chip_fav,icon:'heart'},
+    ...CATEGORIES.map(c=>({key:c.key,label:catLabel(c.key),icon:c.icon}))];
   function renderChips(){
     document.getElementById('filterBar').innerHTML = chips.map(c=>{
       const on = (c.key==='fav' && state.favOnly) || (c.key!=='fav' && !state.favOnly && state.cat===c.key);
@@ -79,25 +82,25 @@
     else if(state.cat!=='all'){ list=list.filter(t=>t.cat===state.cat); }
     if(state.q){
       const q=state.q.toLowerCase();
-      list=list.filter(t=>(t.name+' '+t.zone+' '+CAT_LABEL[t.cat]).toLowerCase().includes(q));
+      list=list.filter(t=>(t.name+' '+(t.en||TOUR_EN[t.id]||'')+' '+t.zone+' '+catLabel(t.cat)).toLowerCase().includes(q));
     }
     if(state.sort==='low') list.sort((a,b)=>a.price-b.price);
     else if(state.sort==='high') list.sort((a,b)=>b.price-a.price);
-    else if(state.sort==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
+    else if(state.sort==='az') list.sort((a,b)=>tourName(a).localeCompare(tourName(b)));
 
     const grid=document.getElementById('catalogGrid'), empty=document.getElementById('emptyState');
     if(list.length){ grid.style.display='grid'; empty.style.display='none'; renderGrid(grid,list); }
     else { grid.style.display='none'; empty.style.display='block'; grid.innerHTML=''; }
 
-    const label = state.favOnly ? 'Tus favoritos'
-      : state.cat==='all' ? 'Todas las actividades' : CAT_LABEL[state.cat];
+    const label = state.favOnly ? T.favs_title
+      : state.cat==='all' ? T.crumb_all : catLabel(state.cat);
     document.getElementById('resultCount').innerHTML =
-      `${list.length} <span>${list.length===1?'actividad encontrada':'actividades encontradas'}${state.q?` · "${state.q}"`:''}</span>`;
+      `${list.length} <span>${list.length===1?T.found_s:T.found_p}${state.q?` · "${state.q}"`:''}</span>`;
     document.getElementById('crumbCat').textContent = label;
     document.getElementById('catalogTitle').innerHTML = state.favOnly
-      ? `Mis favoritos <span>· en Punta Cana</span>`
-      : state.cat==='all' ? `Punta Cana <span>· Excursiones, Tours y Tickets</span>`
-      : `${CAT_LABEL[state.cat]} <span>· en Punta Cana</span>`;
+      ? `${T.favs_title} <span>${T.in_pc}</span>`
+      : state.cat==='all' ? T.cat_title
+      : `${catLabel(state.cat)} <span>${T.in_pc}</span>`;
     renderChips();
   }
 

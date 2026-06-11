@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración · WAOOO Tours</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/waoo.jpeg">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+/* ===== estilos del panel ===== */
+body{background:#f2efe9}
+.adm-top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:50}
+.adm-top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.adm-top .logo b{color:#fff}
+.adm-top .tag{font-size:.78rem;background:var(--grad-sunset);padding:4px 12px;border-radius:99px;font-weight:800;letter-spacing:.06em}
+.adm-top .spacer{flex:1}
+.adm-top a,.adm-top button{color:#cdd8e0;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:9px;transition:.2s}
+.adm-top a:hover,.adm-top button:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.adm-wrap{max-width:1100px;margin:0 auto;padding:30px 22px 80px}
+.adm-tabs{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap}
+.adm-tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:11px 22px;font-weight:700;font-size:.94rem;color:var(--ink-soft);transition:.2s;display:inline-flex;gap:8px;align-items:center}
+.adm-tab:hover{border-color:var(--orange);color:var(--orange)}
+.adm-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.adm-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-sm);margin-bottom:20px}
+.adm-card h2{font-size:1.3rem;margin-bottom:6px}
+.adm-card .hint{color:var(--muted);font-size:.9rem;margin:0 0 18px}
+
+.adm-toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.adm-toolbar input[type=text],.adm-toolbar select{border:1.5px solid var(--line);border-radius:11px;padding:11px 14px;font:inherit;font-weight:600;background:#fff}
+.adm-toolbar input[type=text]{flex:1;min-width:200px}
+.adm-toolbar input:focus,.adm-toolbar select:focus{outline:none;border-color:var(--orange)}
+.adm-count{font-size:.86rem;color:var(--muted);font-weight:700;margin-left:auto}
+
+.t-list{display:flex;flex-direction:column;gap:10px}
+.t-row{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;transition:.2s}
+.t-row:hover{border-color:var(--orange);box-shadow:var(--shadow-sm)}
+.t-thumb{width:60px;height:46px;border-radius:9px;flex-shrink:0;overflow:hidden;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.62rem;letter-spacing:.06em;background:var(--grad-sunset)}
+.t-thumb img{width:100%;height:100%;object-fit:cover}
+.t-info{flex:1;min-width:0}
+.t-info b{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-info span{font-size:.78rem;color:var(--muted);font-weight:600}
+.t-price{font-family:'Bricolage Grotesque';font-weight:800;font-size:1.05rem;white-space:nowrap}
+.t-actions{display:flex;gap:6px}
+.t-actions button{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-soft);transition:.2s;border:1px solid var(--line)}
+.t-actions button:hover{background:var(--sand);color:var(--orange);border-color:var(--orange)}
+.t-actions button.del:hover{color:#e23b3b;border-color:#e23b3b;background:#fff5f5}
+
+.badge-mini{font-size:.64rem;font-weight:800;padding:3px 9px;border-radius:99px;color:#fff;margin-left:8px;vertical-align:2px}
+.badge-mini.popular{background:var(--ink)}
+.badge-mini.unica{background:var(--grad-sunset)}
+
+/* form modal */
+.modal{position:fixed;inset:0;z-index:90;background:rgba(21,33,43,.55);display:none;align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto}
+.modal.open{display:flex}
+.modal-card{background:#fff;border-radius:var(--radius-lg);max-width:680px;width:100%;padding:30px;box-shadow:var(--shadow-lg);animation:fadeUp .3s ease}
+.modal-card h2{margin-bottom:20px}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.f-grid .full{grid-column:1/-1}
+@media(max-width:560px){.f-grid{grid-template-columns:1fr}}
+.f-field label{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.f-field input,.f-field select{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;font:inherit;font-weight:600;background:#fff}
+.f-field input:focus,.f-field select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,106,19,.1)}
+.img-prev{margin-top:10px;border-radius:11px;overflow:hidden;border:1px solid var(--line);max-height:160px;display:none}
+.img-prev img{width:100%;height:160px;object-fit:cover}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:26px}
+
+/* login */
+.login-box{max-width:400px;margin:80px auto;background:#fff;border-radius:var(--radius-lg);padding:40px;box-shadow:var(--shadow-lg);text-align:center}
+.login-box img{width:120px;margin:0 auto 16px;border-radius:14px}
+.login-box h1{font-size:1.5rem;margin-bottom:6px}
+.login-box p{color:var(--muted);font-size:.92rem;margin:0 0 22px}
+.login-box input{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;font:inherit;font-weight:600;text-align:center;font-size:1.05rem}
+.login-box input:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,106,19,.1)}
+.login-err{color:#e23b3b;font-size:.86rem;font-weight:700;margin-top:10px;display:none}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.shake{animation:shake .3s ease}
+
+/* publish */
+.pub-stat{display:flex;gap:14px;align-items:center;background:var(--sand);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-bottom:18px;font-weight:600;font-size:.94rem;color:var(--ink-soft)}
+.pub-stat b{color:var(--ink)}
+.steps{counter-reset:s;display:grid;gap:12px;margin:18px 0}
+.steps li{display:flex;gap:14px;align-items:flex-start;font-size:.95rem;color:var(--ink-soft)}
+.steps li::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--grad-sunset);color:#fff;font-weight:800;display:grid;place-items:center;flex-shrink:0;font-size:.85rem}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:560px){.stat-grid{grid-template-columns:1fr}}
+.stat-box{background:var(--sand);border:1px solid var(--line);border-radius:13px;padding:18px;text-align:center}
+.stat-box b{font-family:'Bricolage Grotesque';font-size:1.8rem;display:block}
+.stat-box span{font-size:.8rem;color:var(--muted);font-weight:700}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginView">
+  <div class="login-box">
+    <img src="assets/waoo.jpeg" alt="WAOOO">
+    <h1>Panel de Administración</h1>
+    <p>WAOOO Tours and Adventures · Punta Cana</p>
+    <form onsubmit="return doLogin(event)">
+      <input type="password" id="passInput" placeholder="Contraseña" autocomplete="current-password">
+      <div class="login-err" id="loginErr">Contraseña incorrecta</div>
+      <button class="btn btn-primary btn-block btn-lg" style="margin-top:16px" type="submit">Entrar</button>
+    </form>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="panelView" class="hidden">
+  <div class="adm-top">
+    <div class="wrap">
+      <a class="logo" href="index.html">
+        <img src="assets/waoo.jpeg" alt="WAOOO">
+        <span><b>WA<span style="color:var(--orange)">OOO</span></b></span>
+      </a>
+      <span class="tag">ADMIN</span>
+      <div class="spacer"></div>
+      <a href="index.html" target="_blank">🌐 Ver sitio</a>
+      <button onclick="logout()">Salir →</button>
+    </div>
+  </div>
+
+  <div class="adm-wrap">
+    <div class="adm-tabs">
+      <button class="adm-tab active" data-tab="tours" onclick="showTab('tours')">🎟️ Tours</button>
+      <button class="adm-tab" data-tab="contact" onclick="showTab('contact')">📞 Contacto y marca</button>
+      <button class="adm-tab" data-tab="publish" onclick="showTab('publish')">🚀 Publicar</button>
+    </div>
+
+    <!-- TAB TOURS -->
+    <div id="tab-tours">
+      <div class="stat-grid">
+        <div class="stat-box"><b id="statTotal">0</b><span>Tours activos</span></div>
+        <div class="stat-box"><b id="statAvg">$0</b><span>Precio promedio</span></div>
+        <div class="stat-box"><b id="statPhotos">0</b><span>Con foto propia</span></div>
+      </div>
+      <div class="adm-card">
+        <h2>Excursiones</h2>
+        <p class="hint">Edita el nombre, precio, categoría o foto de cada tour. Los cambios se guardan al instante en este navegador; usa la pestaña <b>Publicar</b> para hacerlos visibles a todo el mundo.</p>
+        <div class="adm-toolbar">
+          <input type="text" id="admSearch" placeholder="Buscar tour..." oninput="renderList()">
+          <select id="admCat" onchange="renderList()"></select>
+          <button class="btn btn-primary" onclick="openForm()">+ Nuevo tour</button>
+        </div>
+        <div class="t-list" id="tList"></div>
+      </div>
+    </div>
+
+    <!-- TAB CONTACT -->
+    <div id="tab-contact" class="hidden">
+      <div class="adm-card">
+        <h2>Datos de contacto</h2>
+        <p class="hint">Estos datos aparecen en el encabezado, el pie de página y los botones de reserva de toda la web.</p>
+        <div class="f-grid">
+          <div class="f-field">
+            <label>Teléfono de llamadas (solo dígitos, con el 1)</label>
+            <input type="text" id="sPhone" placeholder="18294312369">
+          </div>
+          <div class="f-field">
+            <label>WhatsApp de reservas (solo dígitos, con el 1)</label>
+            <input type="text" id="sWa" placeholder="18296318364">
+          </div>
+          <div class="f-field full">
+            <label>Email</label>
+            <input type="email" id="sEmail" placeholder="correo@gmail.com">
+          </div>
+          <div class="f-field full">
+            <label>Página de Facebook (URL completa)</label>
+            <input type="url" id="sFb" placeholder="https://www.facebook.com/...">
+          </div>
+        </div>
+        <div class="modal-actions" style="justify-content:flex-start">
+          <button class="btn btn-primary" onclick="saveSettings()">Guardar datos</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB PUBLISH -->
+    <div id="tab-publish" class="hidden">
+      <div class="adm-card">
+        <h2>Publicar cambios</h2>
+        <div class="pub-stat" id="pubStat"></div>
+        <p class="hint">Tus cambios ya se ven <b>en este navegador</b>. Para que los vean todos los visitantes de la web, sigue estos pasos:</p>
+        <ol class="steps">
+          <li>Pulsa <b>"Descargar data.js"</b> — se descarga el archivo con todos tus cambios.</li>
+          <li>Envía ese archivo a tu desarrollador, o súbelo tú mismo a GitHub reemplazando <b>assets/data.js</b>.</li>
+          <li>En 1-2 minutos la web pública mostrará los nuevos datos. ¡Listo!</li>
+        </ol>
+        <div class="modal-actions" style="justify-content:flex-start;flex-wrap:wrap">
+          <button class="btn btn-primary btn-lg" onclick="downloadData()">⬇️ Descargar data.js</button>
+          <button class="btn btn-outline" onclick="copyData()">📋 Copiar al portapapeles</button>
+          <button class="btn btn-outline" style="color:#e23b3b;border-color:#f3c1c1" onclick="discardLocal()">🗑️ Descartar cambios locales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FORM -->
+<div class="modal" id="formModal" onclick="if(event.target===this)closeForm()">
+  <div class="modal-card">
+    <h2 id="formTitle">Nuevo tour</h2>
+    <div class="f-grid">
+      <div class="f-field full">
+        <label>Nombre del tour (español) *</label>
+        <input type="text" id="fName" placeholder="Ej: Buggies por la Selva con Transportación">
+      </div>
+      <div class="f-field full">
+        <label>Nombre en inglés (opcional)</label>
+        <input type="text" id="fEn" placeholder="E.g: Jungle Buggies with Transportation">
+      </div>
+      <div class="f-field">
+        <label>Precio por persona (USD) *</label>
+        <input type="number" id="fPrice" min="0" step="0.01" placeholder="95.91">
+      </div>
+      <div class="f-field">
+        <label>Categoría</label>
+        <select id="fCat"></select>
+      </div>
+      <div class="f-field">
+        <label>Zona / Punto de salida</label>
+        <input type="text" id="fZone" placeholder="Punta Cana" value="Punta Cana">
+      </div>
+      <div class="f-field">
+        <label>Duración</label>
+        <select id="fDur">
+          <option>Medio día</option><option>Día completo</option><option>1 hora</option>
+          <option>2 horas</option><option>4 horas</option><option>8 horas</option>
+          <option>Atardecer</option><option>Noche</option><option>Varios días</option>
+        </select>
+      </div>
+      <div class="f-field">
+        <label>Etiqueta destacada</label>
+        <select id="fBadge">
+          <option value="">Ninguna</option>
+          <option value="popular">No te lo pierdas</option>
+          <option value="unica">Experiencias Únicas</option>
+        </select>
+      </div>
+      <div class="f-field">
+        <label>Edad mínima (0 = todas)</label>
+        <input type="number" id="fAge" min="0" max="21" value="0">
+      </div>
+      <div class="f-field full">
+        <label>Foto (ruta o enlace, ej: assets/fotos/buggies.jpg)</label>
+        <input type="text" id="fImg" placeholder="assets/fotos/mi-tour.jpg" oninput="previewImg()">
+        <div class="img-prev" id="imgPrev"><img id="imgPrevImg" alt="Vista previa"
+          onerror="document.getElementById('imgPrev').style.display='none'"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeForm()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveForm()">Guardar tour</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>

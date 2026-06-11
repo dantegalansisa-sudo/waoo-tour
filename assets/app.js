@@ -52,8 +52,8 @@ const getFavs = () => { try{return JSON.parse(localStorage.getItem(FAV_KEY))||[]
 const setFavs = a => localStorage.setItem(FAV_KEY, JSON.stringify(a));
 function toggleFav(id){
   const f = getFavs(); const i = f.indexOf(id);
-  if(i>-1){ f.splice(i,1); toast('Eliminado de favoritos'); }
-  else { f.push(id); toast('💛 Guardado en favoritos'); }
+  if(i>-1){ f.splice(i,1); toast(T.toast_fav_rm); }
+  else { f.push(id); toast(T.toast_fav_add); }
   setFavs(f); updateFavCount();
   document.querySelectorAll('[data-fav="'+id+'"]').forEach(b=>b.classList.toggle('on', f.includes(id)));
 }
@@ -71,7 +71,7 @@ function placeholder(t){
   const g = CAT_PH[t.cat] ?? 0;
   const ic = IC[ (CATEGORIES.find(c=>c.key===t.cat)||{}).icon ] || IC.island;
   return `<div class="ph" data-g="${g}">
-      <div class="ph-inner">${ic}<b>WAOOO</b><small>Foto próximamente</small></div>
+      <div class="ph-inner">${ic}<b>WAOOO</b><small>${T.ph_soon}</small></div>
       <img class="ph-logo" src="assets/waoo.jpeg" alt="WAOOO">
     </div>`;
 }
@@ -79,26 +79,27 @@ function placeholder(t){
 /* ---------- card ---------- */
 function cardHTML(t, i = 0){
   const fav = getFavs().includes(t.id) ? ' on':'';
-  const badge = t.badge ? `<span class="badge ${t.badge}">${BADGE[t.badge]}</span>`:'';
+  const badge = t.badge ? `<span class="badge ${t.badge}">${badgeLabel(t.badge)}</span>`:'';
+  const name = tourName(t);
   const media = t.image
-    ? `<img src="${t.image}" alt="${t.name}" loading="lazy">`
+    ? `<img src="${t.image}" alt="${name}" loading="lazy">`
     : placeholder(t);
   return `<article class="card" style="--i:${Math.min(i,11)}">
     <div class="card-media">
       ${media}
       ${badge}
-      <button class="fav-btn${fav}" data-fav="${t.id}" aria-label="Guardar" onclick="event.preventDefault();toggleFav('${t.id}')">${IC.heart}</button>
-      <a href="${tourUrl(t.id)}" style="position:absolute;inset:0;z-index:1" aria-label="${t.name}"></a>
+      <button class="fav-btn${fav}" data-fav="${t.id}" aria-label="Fav" onclick="event.preventDefault();toggleFav('${t.id}')">${IC.heart}</button>
+      <a href="${tourUrl(t.id)}" style="position:absolute;inset:0;z-index:1" aria-label="${name}"></a>
     </div>
     <div class="card-body">
       <div class="card-meta">
         <span>${IC.pin}${t.zone}</span>
-        <span>${IC.clock}${t.duration}</span>
+        <span>${IC.clock}${durLabel(t.duration)}</span>
       </div>
-      <a href="${tourUrl(t.id)}"><h3>${t.name}</h3></a>
+      <a href="${tourUrl(t.id)}"><h3>${name}</h3></a>
       <div class="card-foot">
-        <div class="price"><small>Desde</small><b>${money(t.price)} <span>USD</span></b><em>Precio por persona</em></div>
-        <a href="${tourUrl(t.id)}" class="card-cta">Ver ${IC.arrow}</a>
+        <div class="price"><small>${T.card_from}</small><b>${money(t.price)} <span>USD</span></b><em>${T.card_pp}</em></div>
+        <a href="${tourUrl(t.id)}" class="card-cta">${T.card_view} ${IC.arrow}</a>
       </div>
     </div>
   </article>`;
@@ -118,28 +119,35 @@ function toast(msg){
 /* ---------- shared header build ---------- */
 function buildChrome(active){
   const topbar = `<div class="topbar"><div class="wrap">
-    <div class="tb-left">${IC.star}<span>Operador local en Punta Cana · Reserva directa sin intermediarios</span></div>
+    <div class="tb-left">${IC.star}<span>${T.topbar_tag}</span></div>
     <div class="tb-right">
       <a href="tel:+${WAOOO.phone}">${IC.phone} ${WAOOO.phoneDisplay}</a>
       <a class="hide-sm" href="mailto:${WAOOO.email}">${IC.mail} ${WAOOO.email}</a>
     </div></div></div>`;
 
-  const nav = [['index.html','Inicio'],['tours.html','Excursiones'],['tours.html#categorias','Categorías'],
-    ['index.html#nosotros','Nosotros'],['index.html#contacto','Contacto']];
+  const nav = [
+    ['index.html', T.nav_home, 'home'],
+    ['tours.html', T.nav_tours, 'tours'],
+    ['index.html#categorias', T.nav_cats, 'cats'],
+    ['index.html#nosotros', T.nav_about, 'about'],
+    ['index.html#contacto', T.nav_contact, 'contact'],
+  ];
+  const langBtn = `<button class="icon-btn lang-btn" onclick="toggleLang()" title="Español / English">
+      ${IC.globe} <b>${LNG.toUpperCase()}</b><span style="opacity:.45">·${LNG==='es'?'EN':'ES'}</span></button>`;
 
   const header = `<header class="header"><div class="wrap">
     <a class="logo" href="index.html">
       <img src="assets/waoo.jpeg" alt="WAOOO Tours">
       <span><b>WA<span>OOO</span></b><small>Tours · Punta Cana</small></span>
     </a>
-    <nav class="nav">${nav.map(n=>`<a href="${n[0]}" ${active===n[1]?'class="active"':''}>${n[1]}</a>`).join('')}</nav>
+    <nav class="nav">${nav.map(n=>`<a href="${n[0]}" ${active===n[2]?'class="active"':''}>${n[1]}</a>`).join('')}</nav>
     <form class="header-search" onsubmit="return goSearch(event)">
-      ${IC.search}<input type="text" id="hsearch" placeholder="Busca tu excursión o destino...">
+      ${IC.search}<input type="text" id="hsearch" placeholder="${T.search_ph}">
     </form>
     <div class="header-actions">
-      <a class="icon-btn" href="tours.html"><span>${IC.globe}</span> ES · USD</a>
+      ${langBtn}
       <a class="icon-btn" href="tours.html#favoritos" id="favLink">${IC.heart}<span class="fav-count"></span></a>
-      <a class="btn btn-wa" href="${waLink('¡Hola WAOOO! Quiero información sobre las excursiones en Punta Cana.')}" target="_blank">${IC.wa} Reservar</a>
+      <a class="btn btn-wa" href="${waLink(T.wa_generic)}" target="_blank">${IC.wa} ${T.btn_book}</a>
       <button class="icon-btn burger" onclick="document.getElementById('drawer').classList.add('open')">${IC.menu}</button>
     </div>
   </div></header>
@@ -147,7 +155,8 @@ function buildChrome(active){
     <div class="drawer-panel">
       <button class="drawer-close" onclick="document.getElementById('drawer').classList.remove('open')">×</button>
       ${nav.map(n=>`<a href="${n[0]}">${n[1]}</a>`).join('')}
-      <a class="btn btn-wa" style="margin-top:14px" href="${waLink('¡Hola WAOOO! Quiero reservar una excursión.')}" target="_blank">${IC.wa} Reservar por WhatsApp</a>
+      <a href="javascript:toggleLang()">${IC.globe} ${LNG==='es'?'English version':'Versión en español'}</a>
+      <a class="btn btn-wa" style="margin-top:14px" href="${waLink(T.wa_book_generic)}" target="_blank">${IC.wa} ${T.drawer_wa}</a>
     </div>
   </div>`;
 
@@ -167,44 +176,44 @@ function buildFooter(){
   const slot = document.getElementById('footer-slot'); if(!slot) return;
   const cats = CATEGORIES.slice(0,6);
   slot.innerHTML = `
-  <div class="wa-float-wrap"><a class="wa-float" target="_blank" href="${waLink('¡Hola WAOOO! Quiero reservar una excursión en Punta Cana.')}" aria-label="WhatsApp">${IC.wa}</a></div>
+  <div class="wa-float-wrap"><a class="wa-float" target="_blank" href="${waLink(T.wa_book_generic)}" aria-label="WhatsApp">${IC.wa}</a></div>
   <footer class="footer" id="contacto"><div class="wrap">
     <div class="foot-grid">
       <div>
         <a class="logo" href="index.html"><img src="assets/waoo.jpeg" alt="WAOOO" style="height:50px"><span><b style="color:#fff">WA<span style="color:var(--orange)">OOO</span></b><small>Tours · Punta Cana</small></span></a>
-        <p class="about">Tu operador local de aventuras en Punta Cana. Buggies, catamaranes, islas paradisíacas y mucho más, con reserva directa y los mejores precios.</p>
+        <p class="about">${T.foot_about}</p>
         <div class="foot-soc">
           <a href="${WAOOO.facebook}" target="_blank" rel="noopener" aria-label="Facebook">${IC.fb}</a>
-          <a href="#" aria-label="Instagram (próximamente)">${IC.ig}</a>
+          <a href="#" aria-label="Instagram">${IC.ig}</a>
           <a href="#" aria-label="TikTok">${IC.tt}</a>
-          <a href="${waLink('¡Hola WAOOO!')}" target="_blank" aria-label="WhatsApp">${IC.wa}</a>
+          <a href="${waLink(T.wa_generic)}" target="_blank" aria-label="WhatsApp">${IC.wa}</a>
         </div>
       </div>
-      <div class="foot-col"><h5>Excursiones</h5>
-        ${cats.map(c=>`<a href="tours.html?cat=${c.key}">${c.label}</a>`).join('')}
-        <a href="tours.html">Ver todas</a>
+      <div class="foot-col"><h5>${T.foot_tours}</h5>
+        ${cats.map(c=>`<a href="tours.html?cat=${c.key}">${catLabel(c.key)}</a>`).join('')}
+        <a href="tours.html">${T.foot_all}</a>
       </div>
-      <div class="foot-col"><h5>Empresa</h5>
-        <a href="index.html#nosotros">Sobre nosotros</a>
-        <a href="tours.html">Excursiones</a>
-        <a href="tours.html#favoritos">Mis favoritos</a>
-        <a href="#contacto">Contacto</a>
-        <a href="#">Términos y condiciones</a>
+      <div class="foot-col"><h5>${T.foot_company}</h5>
+        <a href="index.html#nosotros">${T.foot_aboutl}</a>
+        <a href="tours.html">${T.nav_tours}</a>
+        <a href="tours.html#favoritos">${T.foot_favs}</a>
+        <a href="#contacto">${T.nav_contact}</a>
+        <a href="#">${T.foot_terms}</a>
       </div>
-      <div class="foot-col"><h5>Contacto</h5>
+      <div class="foot-col"><h5>${T.nav_contact}</h5>
         <ul class="foot-contact">
           <li>${IC.pin}<span>Punta Cana, La Altagracia,<br>República Dominicana</span></li>
           <li>${IC.phone}<a href="tel:+${WAOOO.phone}">${WAOOO.phoneDisplay}</a></li>
-          <li>${IC.wa}<a href="https://wa.me/${WAOOO.wa}" target="_blank">WhatsApp: ${WAOOO.waDisplay}</a></li>
+          <li>${IC.wa}<a href="https://wa.me/${WAOOO.wa}" target="_blank">${T.wa_label}${WAOOO.waDisplay}</a></li>
           <li>${IC.mail}<a href="mailto:${WAOOO.email}">${WAOOO.email}</a></li>
-          <li>${IC.fb}<a href="${WAOOO.facebook}" target="_blank" rel="noopener">Síguenos en Facebook</a></li>
+          <li>${IC.fb}<a href="${WAOOO.facebook}" target="_blank" rel="noopener">${T.foot_fb}</a></li>
         </ul>
-        <a class="btn btn-wa" style="margin-top:8px" target="_blank" href="${waLink('¡Hola WAOOO! Quiero reservar.')}">${IC.wa} Escríbenos</a>
+        <a class="btn btn-wa" style="margin-top:8px" target="_blank" href="${waLink(T.wa_book_generic)}">${IC.wa} ${T.foot_wa}</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© ${'2026'} WAOOO Tours and Adventures · Punta Cana. Todos los derechos reservados.</span>
-      <div class="foot-pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>EFECTIVO</span></div>
+      <span>© ${'2026'} WAOOO Tours and Adventures · Punta Cana. ${T.foot_rights}</span>
+      <div class="foot-pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>CASH</span></div>
     </div>
   </div></footer>`;
   updateFavCount();
@@ -217,4 +226,4 @@ function initReveal(){
 }
 
 /* ---------- boot common ---------- */
-function bootCommon(active){ buildChrome(active); buildFooter(); updateFavCount(); }
+function bootCommon(active){ buildChrome(active); buildFooter(); updateFavCount(); applyI18n(); }

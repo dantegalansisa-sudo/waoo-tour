@@ -15,8 +15,8 @@
 <section class="related" id="relatedSection" style="display:none">
   <div class="wrap">
     <div class="head-row">
-      <div><span class="eyebrow">Te puede gustar</span><h2 class="section-title">Aventuras similares</h2></div>
-      <a class="btn btn-outline" href="tours.html">Ver todas</a>
+      <div><span class="eyebrow" data-i18n="ey_rel">Te puede gustar</span><h2 class="section-title" data-i18n="ti_rel">Aventuras similares</h2></div>
+      <a class="btn btn-outline" href="tours.html" data-i18n="btn_viewall">Ver todas</a>
     </div>
     <div class="grid" id="relatedGrid"></div>
   </div>
@@ -25,26 +25,28 @@
 <div id="footer-slot"></div>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  bootCommon('Excursiones');
+  bootCommon('tours');
 
   const id = new URLSearchParams(location.search).get('id');
   const t = TOURS.find(x=>x.id===id);
   const root = document.getElementById('detailRoot');
 
   if(!t){
-    root.innerHTML = `<div class="empty" style="padding:120px 20px">😕<b>Excursión no encontrada</b>
-      <a class="btn btn-primary" href="tours.html" style="margin-top:18px">Ver todas las excursiones</a></div>`;
+    root.innerHTML = `<div class="empty" style="padding:120px 20px">😕<b>${T.nf_t}</b>
+      <a class="btn btn-primary" href="tours.html" style="margin-top:18px">${T.nf_btn}</a></div>`;
   } else {
-    document.title = t.name + ' · WAOOO Tours';
-    const blurb = CAT_BLURB[t.cat] || '';
-    const includes = INCLUDES[t.cat] || INCLUDES.combos;
+    const name = tourName(t);
+    document.title = name + ' · WAOOO Tours';
+    const blurb = blurbFor(t.cat);
+    const includes = includesFor(t.cat);
     const catIcon = IC[(CATEGORIES.find(c=>c.key===t.cat)||{}).icon] || '';
 
     const gallery = t.image ? `
       <div class="gallery">
-        <div class="g-main"><img src="${t.image}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius)" alt="${t.name}"></div>
+        <div class="g-main"><img src="${t.image}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius)" alt="${name}"></div>
         <div class="g-thumb">${placeholder(t)}</div>
         <div class="g-thumb">${placeholder(t)}</div>
       </div>`
@@ -54,63 +56,52 @@
         <div class="g-thumb">${placeholder(t)}</div>
       </div>`;
 
-    const bring = ['Ropa cómoda','Traje de baño','Bloqueador biodegradable','Sombrero o gorra','Lentes de sol','Dinero extra','Cámara'];
-    const highlights = [
-      ['Aventura inolvidable en Punta Cana','Una experiencia diseñada para que disfrutes el Caribe al máximo, con todos los detalles cuidados.'],
-      ['Equipo y guías profesionales','Seguridad primero: personal certificado y equipo completo incluido para tu tranquilidad.'],
-      ['Reserva fácil y flexible','Confirma por WhatsApp en minutos. Cancelación gratuita hasta 24h antes.'],
-    ];
-
     const favOn = getFavs().includes(t.id)?' on':'';
 
     root.innerHTML = `
     <div class="detail-head" style="padding-top:26px">
-      <div class="crumb"><a href="index.html">Inicio</a> › <a href="tours.html">Excursiones</a> › <a href="tours.html?cat=${t.cat}">${CAT_LABEL[t.cat]}</a></div>
-      <h1>${t.name}</h1>
-      <span class="detail-loc">${IC.pin} ${t.zone}, La Altagracia, República Dominicana</span>
+      <div class="crumb"><a href="index.html">${T.crumb_home}</a> › <a href="tours.html">${T.nav_tours}</a> › <a href="tours.html?cat=${t.cat}">${catLabel(t.cat)}</a></div>
+      <h1>${name}</h1>
+      <span class="detail-loc">${IC.pin} ${T.loc_line(t.zone)}</span>
     </div>
     ${gallery}
     <div class="detail-wrap">
       <div>
         <div class="detail-tags">
-          <span class="t">${IC.clock} Duración: ${t.duration}</span>
-          <span class="t">${catIcon} ${CAT_LABEL[t.cat]}</span>
-          <span class="t">${IC.user} Edad mínima: ${t.minAge>0?t.minAge+'+':'Todas'}</span>
-          <span class="t">${IC.globe} Español · English</span>
+          <span class="t">${IC.clock} ${T.d_dur} ${durLabel(t.duration)}</span>
+          <span class="t">${catIcon} ${catLabel(t.cat)}</span>
+          <span class="t">${IC.user} ${T.d_age} ${t.minAge>0?t.minAge+'+':T.d_all_ages}</span>
+          <span class="t">${IC.globe} ${T.d_langs}</span>
         </div>
 
         <div class="detail-section">
-          <h2>Información destacada</h2>
+          <h2>${T.d_hl}</h2>
           <div class="hi-list">
-            ${highlights.map(h=>`<div class="hi"><div class="hi-ic">${IC.star}</div><div><b>${h[0]}</b><p>${h[1]}</p></div></div>`).join('')}
+            ${T.hl.map(h=>`<div class="hi"><div class="hi-ic">${IC.star}</div><div><b>${h[0]}</b><p>${h[1]}</p></div></div>`).join('')}
           </div>
         </div>
 
         <div class="detail-section">
-          <h2>¿Qué harás?</h2>
+          <h2>${T.d_what}</h2>
           <p>${blurb}</p>
-          <p>Vive una experiencia llena de emoción en <b>${t.zone}</b>, República Dominicana. Nuestro equipo local se encarga de cada detalle para que tú solo te preocupes por disfrutar. ¿Estás listo para vivir una experiencia inolvidable en el paraíso caribeño?</p>
+          <p>${T.what_p2(t.zone)}</p>
         </div>
 
         <div class="detail-section">
-          <h2>¿Qué incluye?</h2>
+          <h2>${T.d_inc}</h2>
           <ul class="inc-list">
             ${includes.map(i=>`<li>${IC.check} ${i}</li>`).join('')}
           </ul>
         </div>
 
         <div class="detail-section">
-          <h2>¿Qué traer?</h2>
-          <ul class="bring-list">${bring.map(b=>`<li>${b}</li>`).join('')}</ul>
+          <h2>${T.d_bring}</h2>
+          <ul class="bring-list">${T.bring.map(b=>`<li>${b}</li>`).join('')}</ul>
         </div>
 
         <div class="detail-section" style="border-bottom:none">
-          <h2>Cosas por saber</h2>
-          <p>· Cancelación gratuita hasta 24 horas antes de la actividad.<br>
-          · Los menores deben estar acompañados por un adulto en todo momento.<br>
-          · La transportación desde/hacia el hotel puede tener costo adicional según la zona.<br>
-          · Precio "Desde" por persona; varía según fecha, cantidad de viajeros y opción seleccionada.<br>
-          · Confirmación inmediata al reservar por WhatsApp con nuestro equipo local.</p>
+          <h2>${T.d_know}</h2>
+          <p>${T.know_html}</p>
         </div>
       </div>
 
@@ -118,34 +109,32 @@
       <aside>
         <div class="book-box">
           <button class="fav-btn${favOn}" data-fav="${t.id}" onclick="toggleFav('${t.id}')" style="position:static;float:right;margin-left:10px">${IC.heart}</button>
-          <div class="book-from">Desde</div>
-          <div class="book-price"><b>${money(t.price)}</b><small>USD / persona</small></div>
+          <div class="book-from">${T.book_from}</div>
+          <div class="book-price"><b>${money(t.price)}</b><small>${T.book_per}</small></div>
 
           <div class="book-field">
-            <label>Fecha</label>
+            <label>${T.book_date}</label>
             <input type="date" id="bDate">
           </div>
           <div class="book-field">
-            <label>Viajeros</label>
+            <label>${T.book_trav}</label>
             <select id="bPax">
-              ${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}">${n} ${n===1?'persona':'personas'}</option>`).join('')}
-              <option value="10">9+ personas (grupo)</option>
+              ${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}">${n} ${n===1?T.person:T.people}</option>`).join('')}
+              <option value="10">${T.group9}</option>
             </select>
           </div>
 
           <div class="book-total">
-            <span>Total estimado</span>
+            <span>${T.book_total}</span>
             <b id="bTotal">${money(t.price)}</b>
           </div>
 
-          <a class="btn btn-wa btn-block btn-lg" id="bReserve" target="_blank">${IC.wa} Reservar por WhatsApp</a>
-          <button class="btn btn-outline btn-block" style="margin-top:10px" onclick="copyShare()">${IC.tag} Compartir / Cotizar</button>
+          <a class="btn btn-wa btn-block btn-lg" id="bReserve" target="_blank">${IC.wa} ${T.book_btn}</a>
+          <button class="btn btn-outline btn-block" style="margin-top:10px" onclick="copyShare()">${IC.tag} ${T.book_share}</button>
 
-          <div class="book-note">${IC.check} Cancelación gratuita hasta 24h antes</div>
+          <div class="book-note">${IC.check} ${T.book_cancel}</div>
 
-          <div class="book-help">
-            ¿Dudas? Llámanos al <a href="tel:+${WAOOO.phone}">${WAOOO.phoneDisplay}</a> o escríbenos por WhatsApp al <a href="https://wa.me/${WAOOO.wa}" target="_blank">${WAOOO.waDisplay}</a>. Atención local 24/7.
-          </div>
+          <div class="book-help">${T.book_help(WAOOO)}</div>
         </div>
       </aside>
     </div>`;
@@ -161,21 +150,17 @@
       const pax = parseInt(paxEl.value)||1;
       const total = t.price*pax;
       totalEl.textContent = money(total);
-      const msg = `¡Hola WAOOO! 🌴 Quiero reservar esta excursión:\n\n`+
-        `🎟️ *${t.name}*\n`+
-        `📍 ${t.zone}, Punta Cana\n`+
-        `📅 Fecha: ${dateEl.value}\n`+
-        `👥 Viajeros: ${paxEl.options[paxEl.selectedIndex].text}\n`+
-        `💵 Total estimado: ${money(total)} USD\n\n`+
-        `¿Me confirman disponibilidad y los detalles? ¡Gracias!`;
-      reserveEl.href = waLink(msg);
+      reserveEl.href = waLink(T.wa_book({
+        name, zone: t.zone, date: dateEl.value,
+        pax: paxEl.options[paxEl.selectedIndex].text, total: money(total),
+      }));
     }
     paxEl.onchange=refresh; dateEl.onchange=refresh; refresh();
 
     window.copyShare = function(){
-      const msg = `Mira esta excursión de WAOOO Tours Punta Cana: ${t.name} — desde ${money(t.price)} USD. ${location.href}`;
-      if(navigator.clipboard){ navigator.clipboard.writeText(msg); toast('🔗 Enlace copiado'); }
-      else toast('Copia el enlace de la barra');
+      const msg = T.share_msg({name, price: money(t.price), url: location.href});
+      if(navigator.clipboard){ navigator.clipboard.writeText(msg); toast(T.toast_copied); }
+      else toast(T.toast_copy_manual);
     };
 
     /* related */

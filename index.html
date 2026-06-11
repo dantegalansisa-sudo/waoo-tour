@@ -17,38 +17,38 @@
     <source src="assets/hero.mp4" type="video/mp4">
   </video>
   <div class="wrap">
-    <div class="hero-badge">⭐ <b>4.9/5</b> · +12.000 viajeros felices en Punta Cana</div>
-    <h1>Vive Punta Cana <em>como nunca</em> la habías soñado</h1>
-    <p class="lead">Buggies por la selva, catamaranes con barra libre, islas de postal y encuentros con delfines. Tu aventura caribeña empieza aquí.</p>
+    <div class="hero-badge" data-i18n="hero_badge">⭐ <b>4.9/5</b> · +12.000 viajeros felices en Punta Cana</div>
+    <h1 data-i18n="hero_h1">Vive Punta Cana <em>como nunca</em> la habías soñado</h1>
+    <p class="lead" data-i18n="hero_lead">Buggies por la selva, catamaranes con barra libre, islas de postal y encuentros con delfines. Tu aventura caribeña empieza aquí.</p>
 
     <div class="search-tabs">
-      <button class="search-tab active">🧭 Actividades</button>
-      <a class="search-tab" href="#contacto">🚐 Traslados</a>
+      <button class="search-tab active" data-i18n="tab_act">🧭 Actividades</button>
+      <a class="search-tab" href="#contacto" data-i18n="tab_tra">🚐 Traslados</a>
     </div>
     <form class="search-panel" onsubmit="return heroSearch(event)">
       <div class="sp-field">
-        <label>¿Qué quieres hacer?</label>
-        <input type="text" id="qInput" placeholder="Buggies, Saona, snorkel...">
+        <label data-i18n="sf_what">¿Qué quieres hacer?</label>
+        <input type="text" id="qInput" data-i18n-ph="sf_what_ph" placeholder="Buggies, Saona, snorkel...">
       </div>
       <div class="sp-field">
-        <label>Categoría</label>
+        <label data-i18n="sf_cat">Categoría</label>
         <select id="catInput"></select>
       </div>
       <div class="sp-field">
-        <label>Viajeros</label>
+        <label data-i18n="sf_trav">Viajeros</label>
         <select id="paxInput">
-          <option>1 persona</option><option>2 personas</option><option>3 personas</option>
-          <option>4 personas</option><option>5+ personas</option>
+          <option data-i18n="p1">1 persona</option><option data-i18n="p2">2 personas</option><option data-i18n="p3">3 personas</option>
+          <option data-i18n="p4">4 personas</option><option data-i18n="p5">5+ personas</option>
         </select>
       </div>
-      <button class="btn btn-primary" type="submit">Buscar aventuras</button>
+      <button class="btn btn-primary" type="submit" data-i18n="sf_btn">Buscar aventuras</button>
     </form>
 
     <div class="hero-stats">
-      <div><b data-count="111" data-suffix="+">0+</b><span>Excursiones</span></div>
-      <div><b data-count="16">0</b><span>Categorías</span></div>
-      <div><b>24/7</b><span>Atención local</span></div>
-      <div><b data-count="100" data-suffix="%">0%</b><span>Reserva segura</span></div>
+      <div><b data-count="111" data-suffix="+">0+</b><span data-i18n="st1">Excursiones</span></div>
+      <div><b data-count="16">0</b><span data-i18n="st2">Categorías</span></div>
+      <div><b>24/7</b><span data-i18n="st3">Atención local</span></div>
+      <div><b data-count="100" data-suffix="%">0%</b><span data-i18n="st4">Reserva segura</span></div>
     </div>
   </div>
   <div class="hero-wave" aria-hidden="true">
@@ -70,10 +70,10 @@
   <div class="wrap">
     <div class="head-row reveal">
       <div>
-        <span class="eyebrow">Explora por estilo</span>
-        <h2 class="section-title">Elige tu tipo de aventura</h2>
+        <span class="eyebrow" data-i18n="ey_cats">Explora por estilo</span>
+        <h2 class="section-title" data-i18n="ti_cats">Elige tu tipo de aventura</h2>
       </div>
-      <a class="btn btn-outline" href="tours.html">Ver todas las categorías ${''}</a>
+      <a class="btn btn-outline" href="tours.html" data-i18n="btn_allcats">Ver todas las categorías</a>
     </div>
     <div class="cat-strip reveal" id="catStrip"></div>
   </div>
@@ -84,11 +84,11 @@
   <div class="wrap">
     <div class="head-row reveal">
       <div>
-        <span class="eyebrow">No te lo pierdas</span>
-        <h2 class="section-title">Experiencias destacadas</h2>
-        <p class="section-sub">Las aventuras favoritas de nuestros viajeros en Punta Cana y alrededores.</p>
+        <span class="eyebrow" data-i18n="ey_feat">No te lo pierdas</span>
+        <h2 class="section-title" data-i18n="ti_feat">Experiencias destacadas</h2>
+        <p class="section-sub" data-i18n="su_feat">Las aventuras favoritas de nuestros viajeros en Punta Cana y alrededores.</p>
       </div>
-      <a class="btn btn-dark" href="tours.html">Ver todas</a>
+      <a class="btn btn-dark" href="tours.html" data-i18n="btn_viewall">Ver todas</a>
     </div>
     <div class="grid reveal" id="featuredGrid"></div>
   </div>
@@ -99,9 +99,9 @@
   <div class="wrap">
     <div class="head-row reveal" style="margin-bottom:0">
       <div>
-        <span class="eyebrow">Por qué WAOOO</span>
-        <h2 class="section-title">Reserva con tu operador local de confianza</h2>
-        <p class="section-sub">No somos un intermediario. Somos quienes te recogen, te guían y te hacen vivir Punta Cana de verdad.</p>
+        <span class="eyebrow" data-i18n="ey_why">Por qué WAOOO</span>
+        <h2 class="section-title" data-i18n="ti_why">Reserva con tu operador local de confianza</h2>
+        <p class="section-sub" data-i18n="su_why">No somos un intermediario. Somos quienes te recogen, te guían y te hacen vivir Punta Cana de verdad.</p>
       </div>
     </div>
     <div class="feat-grid reveal" id="featGrid"></div>
@@ -113,11 +113,11 @@
   <div class="wrap">
     <div class="head-row reveal">
       <div>
-        <span class="eyebrow">Las más reservadas</span>
-        <h2 class="section-title">Aventuras populares</h2>
-        <p class="section-sub">Buggies, catamaranes e islas: lo que todos quieren vivir en el Caribe.</p>
+        <span class="eyebrow" data-i18n="ey_pop">Las más reservadas</span>
+        <h2 class="section-title" data-i18n="ti_pop">Aventuras populares</h2>
+        <p class="section-sub" data-i18n="su_pop">Buggies, catamaranes e islas: lo que todos quieren vivir en el Caribe.</p>
       </div>
-      <a class="btn btn-outline" href="tours.html">Explorar catálogo</a>
+      <a class="btn btn-outline" href="tours.html" data-i18n="btn_catalog">Explorar catálogo</a>
     </div>
     <div class="grid reveal" id="popularGrid"></div>
   </div>
@@ -128,9 +128,9 @@
   <div class="wrap">
     <div class="head-row reveal">
       <div>
-        <span class="eyebrow">Destinos</span>
-        <h2 class="section-title">Aventuras en cada rincón</h2>
-        <p class="section-sub">Desde Bávaro hasta Samaná, llegamos a los mejores destinos del país.</p>
+        <span class="eyebrow" data-i18n="ey_zones">Destinos</span>
+        <h2 class="section-title" data-i18n="ti_zones">Aventuras en cada rincón</h2>
+        <p class="section-sub" data-i18n="su_zones">Desde Bávaro hasta Samaná, llegamos a los mejores destinos del país.</p>
       </div>
     </div>
     <div class="zone-grid reveal" id="zoneGrid"></div>
@@ -142,8 +142,8 @@
   <div class="wrap">
     <div class="head-row reveal">
       <div>
-        <span class="eyebrow">Lo que dicen</span>
-        <h2 class="section-title">Viajeros felices</h2>
+        <span class="eyebrow" data-i18n="ey_testi">Lo que dicen</span>
+        <h2 class="section-title" data-i18n="ti_testi">Viajeros felices</h2>
       </div>
     </div>
     <div class="testi-grid reveal" id="testiGrid"></div>
@@ -156,12 +156,12 @@
     <div class="cta-band reveal">
       <div class="inner">
         <div>
-          <h2>¿Listo para tu próxima aventura en Punta Cana?</h2>
-          <p>Escríbenos por WhatsApp y arma tu excursión a la medida. Respondemos al instante.</p>
+          <h2 data-i18n="cta_t">¿Listo para tu próxima aventura en Punta Cana?</h2>
+          <p data-i18n="cta_p">Escríbenos por WhatsApp y arma tu excursión a la medida. Respondemos al instante.</p>
         </div>
         <div class="cta-actions">
-          <a class="btn btn-dark btn-lg" id="ctaWa" target="_blank">Reservar por WhatsApp</a>
-          <a class="btn btn-ghost btn-lg" href="tours.html">Ver excursiones</a>
+          <a class="btn btn-dark btn-lg" id="ctaWa" target="_blank" data-i18n="cta_b1">Reservar por WhatsApp</a>
+          <a class="btn btn-ghost btn-lg" href="tours.html" data-i18n="cta_b2">Ver excursiones</a>
         </div>
       </div>
     </div>
@@ -171,28 +171,26 @@
 <div id="footer-slot"></div>
 
 <script src="assets/data.js"></script>
+<script src="assets/i18n.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  bootCommon('Inicio');
+  bootCommon('home');
+  document.title = T.title_home;
 
   /* category select in hero */
   const catSel = document.getElementById('catInput');
-  catSel.innerHTML = '<option value="">Todas las categorías</option>' +
-    CATEGORIES.map(c=>`<option value="${c.key}">${c.label}</option>`).join('');
+  catSel.innerHTML = `<option value="">${T.sf_allcats}</option>` +
+    CATEGORIES.map(c=>`<option value="${c.key}">${catLabel(c.key)}</option>`).join('');
 
   /* trust strip */
-  document.getElementById('trust').innerHTML = [
-    [IC.shield,'Reserva 100% segura'],
-    [IC.tag,'Mejor precio garantizado'],
-    [IC.van,'Transporte incluido*'],
-    [IC.check,'Cancelación gratis 24h'],
-    [IC.star,'+12.000 reseñas 5★'],
-  ].map(t=>`<div class="t">${t[0]}<span>${t[1]}</span></div>`).join('');
+  const trustIcons = [IC.shield, IC.tag, IC.van, IC.check, IC.star];
+  document.getElementById('trust').innerHTML = T.trust
+    .map((txt,i)=>`<div class="t">${trustIcons[i]}<span>${txt}</span></div>`).join('');
 
   /* categories */
   document.getElementById('catStrip').innerHTML = CATEGORIES.map(c=>`
     <a class="cat-card" href="tours.html?cat=${c.key}">
-      <div class="cat-ic">${IC[c.icon]}</div><span>${c.label}</span>
+      <div class="cat-ic">${IC[c.icon]}</div><span>${catLabel(c.key)}</span>
     </a>`).join('');
 
   /* featured = badge unica/popular, pick 8 */
@@ -205,38 +203,30 @@
   renderGrid(document.getElementById('popularGrid'), popular);
 
   /* why features */
-  document.getElementById('featGrid').innerHTML = [
-    [IC.pin,'Operador 100% local','Estamos en Punta Cana. Conocemos cada playa, cada sendero y cada secreto del Caribe.'],
-    [IC.tag,'Precios directos','Sin intermediarios ni sobreprecios. Pagas lo justo por vivir lo mejor.'],
-    [IC.shield,'Seguridad ante todo','Equipo certificado, guías profesionales y seguro en todas las actividades.'],
-    [IC.wa,'Atención 24/7','Te asistimos por WhatsApp antes, durante y después de tu aventura.'],
-  ].map(f=>`<div class="feat"><div class="feat-ic">${f[0]}</div><h4>${f[1]}</h4><p>${f[2]}</p></div>`).join('');
+  const featIcons = [IC.pin, IC.tag, IC.shield, IC.wa];
+  document.getElementById('featGrid').innerHTML = T.feats
+    .map((f,i)=>`<div class="feat"><div class="feat-ic">${featIcons[i]}</div><h4>${f[0]}</h4><p>${f[1]}</p></div>`).join('');
 
   /* zones */
   document.getElementById('zoneGrid').innerHTML = [
-    ['Bávaro & Punta Cana','Buggies, catamaranes y playas','',''],
-    ['Isla Saona & Catalina','Islas paradisíacas','1','islas'],
-    ['Cap Cana','Lujo, golf y Scape Park','2','privados'],
-    ['Samaná','Cascadas y ballenas','3','samana'],
-  ].map((z,i)=>`<a class="zone" data-z="${z[2]}" href="tours.html${z[3]?'?cat='+z[3]:''}">
-      <div class="zone-info"><b>${z[0]}</b><span>${z[1]}</span></div></a>`).join('');
+    ['Bávaro & Punta Cana','',''],
+    ['Isla Saona & Catalina','1','islas'],
+    ['Cap Cana','2','privados'],
+    ['Samaná','3','samana'],
+  ].map((z,i)=>`<a class="zone" data-z="${z[1]}" href="tours.html${z[2]?'?cat='+z[2]:''}">
+      <div class="zone-info"><b>${z[0]}</b><span>${T.zones[i]}</span></div></a>`).join('');
 
   /* testimonials */
-  document.getElementById('testiGrid').innerHTML = [
-    ['Laura G.','España','¡Increíble! El tour de buggies por la selva fue pura adrenalina y el guía atentísimo. Repetiremos seguro.'],
-    ['Michael R.','USA','Saona Island was paradise. Everything organized perfectly, free bar on the catamaran. 100% recommended!'],
-    ['Familia Pérez','México','Hicimos Monkeyland con los niños y la pasamos genial. Transporte puntual y trato espectacular.'],
-  ].map(t=>`<div class="testi">
+  document.getElementById('testiGrid').innerHTML = T.testi.map(t=>`<div class="testi">
       <div class="stars">${IC.star.repeat(5)}</div>
       <p>"${t[2]}"</p>
       <div class="testi-who"><div class="testi-av">${t[0][0]}</div><div><b>${t[0]}</b><span>${t[1]}</span></div></div>
     </div>`).join('');
 
-  document.getElementById('ctaWa').href = waLink('¡Hola WAOOO! Quiero armar mi excursión en Punta Cana. ¿Me ayudan?');
+  document.getElementById('ctaWa').href = waLink(T.wa_cta);
 
   /* marquee */
-  const mq = ['🌴 PUNTA CANA','🛥️ CATAMARÁN','🏝️ ISLA SAONA','🐬 DELFINES','🏎️ BUGGIES','🤿 SNORKEL','🪂 PARASAILING','🐎 CABALLOS','🎉 COCO BONGO','🌅 SAMANÁ'];
-  document.getElementById('mqTrack').innerHTML = mq.concat(mq).map(x=>`<span>${x}</span>`).join('');
+  document.getElementById('mqTrack').innerHTML = T.mq.concat(T.mq).map(x=>`<span>${x}</span>`).join('');
 
   /* contadores animados del hero */
   document.querySelectorAll('[data-count]').forEach(el=>{

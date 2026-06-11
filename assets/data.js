@@ -198,3 +198,21 @@ const INCLUDES = {
   combos: ["Varias actividades en un día", "Almuerzo o snacks", "Guías profesionales", "Transportación ida y vuelta*"],
   privados: ["Embarcación o servicio exclusivo", "Atención personalizada", "Barra libre y almuerzo", "Transportación privada*"],
 };
+
+/* ============================================================
+   Cambios locales del panel admin (vista previa en este navegador).
+   Para publicarlos a todo el mundo: panel admin → Publicar → descargar
+   data.js y reemplazar este archivo en el repositorio.
+   ============================================================ */
+(function(){
+  try{
+    const ov = JSON.parse(localStorage.getItem('waooo_admin_data') || 'null');
+    if(ov){
+      if(ov.settings) Object.assign(WAOOO, ov.settings);
+      if(Array.isArray(ov.tours) && ov.tours.length){
+        TOURS.length = 0;
+        ov.tours.forEach(function(t){ TOURS.push(t); });
+      }
+    }
+  }catch(e){}
+})();
