@@ -63,8 +63,17 @@ body{background:#f2efe9}
 .f-field label{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 .f-field input,.f-field select{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px 14px;font:inherit;font-weight:600;background:#fff}
 .f-field input:focus,.f-field select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 4px rgba(255,106,19,.1)}
-.img-prev{margin-top:10px;border-radius:11px;overflow:hidden;border:1px solid var(--line);max-height:160px;display:none}
+.img-prev{margin-top:10px;border-radius:11px;overflow:hidden;border:1px solid var(--line);max-height:160px;display:none;position:relative}
 .img-prev img{width:100%;height:160px;object-fit:cover}
+.up-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.up-hint{font-size:.8rem;color:var(--muted);font-weight:600}
+.img-x{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(21,33,43,.8);
+  color:#fff;font-size:.85rem;display:grid;place-items:center;transition:.2s}
+.img-x:hover{background:#e23b3b}
+.gal-strip{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.gal-thumb{position:relative;width:92px;height:70px;border-radius:9px;overflow:hidden;border:1px solid var(--line)}
+.gal-thumb img{width:100%;height:100%;object-fit:cover}
+.gal-thumb .img-x{top:4px;right:4px;width:24px;height:24px;font-size:.7rem}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:26px}
 
 /* login */
@@ -185,13 +194,12 @@ body{background:#f2efe9}
         <div class="pub-stat" id="pubStat"></div>
         <p class="hint">Tus cambios ya se ven <b>en este navegador</b>. Para que los vean todos los visitantes de la web, sigue estos pasos:</p>
         <ol class="steps">
-          <li>Pulsa <b>"Descargar data.js"</b> — se descarga el archivo con todos tus cambios.</li>
-          <li>Envía ese archivo a tu desarrollador, o súbelo tú mismo a GitHub reemplazando <b>assets/data.js</b>.</li>
-          <li>En 1-2 minutos la web pública mostrará los nuevos datos. ¡Listo!</li>
+          <li>Pulsa <b>"Descargar publicación"</b> — se descarga UN solo archivo ZIP con todos tus cambios y fotos.</li>
+          <li>Envía ese ZIP a tu desarrollador por WhatsApp o correo. (Él lo sube a la web en minutos.)</li>
+          <li>Cuando te confirme que la web está actualizada, pulsa <b>"Descartar cambios locales"</b> para liberar espacio y seguir trabajando.</li>
         </ol>
         <div class="modal-actions" style="justify-content:flex-start;flex-wrap:wrap">
-          <button class="btn btn-primary btn-lg" onclick="downloadData()">⬇️ Descargar data.js</button>
-          <button class="btn btn-outline" onclick="copyData()">📋 Copiar al portapapeles</button>
+          <button class="btn btn-primary btn-lg" onclick="downloadPublication()">⬇️ Descargar publicación (ZIP)</button>
           <button class="btn btn-outline" style="color:#e23b3b;border-color:#f3c1c1" onclick="discardLocal()">🗑️ Descartar cambios locales</button>
         </div>
       </div>
@@ -245,10 +253,25 @@ body{background:#f2efe9}
         <input type="number" id="fAge" min="0" max="21" value="0">
       </div>
       <div class="f-field full">
-        <label>Foto (ruta o enlace, ej: assets/fotos/buggies.jpg)</label>
-        <input type="text" id="fImg" placeholder="assets/fotos/mi-tour.jpg" oninput="previewImg()">
-        <div class="img-prev" id="imgPrev"><img id="imgPrevImg" alt="Vista previa"
-          onerror="document.getElementById('imgPrev').style.display='none'"></div>
+        <label>Foto principal</label>
+        <div class="up-row">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('fMainFile').click()">📷 Subir foto</button>
+          <span class="up-hint">Elígela de tu computadora o celular. Se ajusta sola.</span>
+        </div>
+        <input type="file" id="fMainFile" accept="image/*" hidden onchange="onMainFile(this)">
+        <div class="img-prev" id="imgPrev">
+          <img id="imgPrevImg" alt="Vista previa" onerror="this.parentElement.style.display='none'">
+          <button type="button" class="img-x" onclick="clearMain()" title="Quitar foto">✕</button>
+        </div>
+      </div>
+      <div class="f-field full">
+        <label>Más fotos del tour (se ven en la página del tour)</label>
+        <div class="up-row">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('fGalFile').click()">🖼️ Agregar fotos</button>
+          <span class="up-hint">Puedes elegir varias a la vez. Máximo 6.</span>
+        </div>
+        <input type="file" id="fGalFile" accept="image/*" multiple hidden onchange="onGalFiles(this)">
+        <div class="gal-strip" id="galStrip"></div>
       </div>
     </div>
     <div class="modal-actions">
