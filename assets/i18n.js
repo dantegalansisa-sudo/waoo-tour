@@ -253,6 +253,7 @@ es: {
   foot_aboutl:"Sobre nosotros", foot_favs:"Mis favoritos", foot_terms:"Términos y condiciones", foot_all:"Ver todas",
   foot_fb:"Síguenos en Facebook", foot_wa:"Escríbenos", foot_rights:"Todos los derechos reservados.",
   wa_label:"WhatsApp: ",
+  foot_credit:"Sitio web diseñado y desarrollado por",
 },
 en: {
   title_home:"WAOOO Tours and Adventures · Excursions in Punta Cana",
@@ -323,6 +324,7 @@ en: {
   foot_aboutl:"About us", foot_favs:"My favorites", foot_terms:"Terms & conditions", foot_all:"View all",
   foot_fb:"Follow us on Facebook", foot_wa:"Message us", foot_rights:"All rights reserved.",
   wa_label:"WhatsApp: ",
+  foot_credit:"Website designed & built by",
 },
 };
 const T = STR[LNG];

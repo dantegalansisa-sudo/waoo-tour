@@ -323,6 +323,10 @@ ul{margin:0;padding:0;list-style:none}
   display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.84rem}
 .foot-pay{display:flex;gap:8px;align-items:center}
 .foot-pay span{background:rgba(255,255,255,.08);padding:5px 10px;border-radius:7px;font-size:.72rem;font-weight:700;color:#fff}
+.foot-credit{text-align:center;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.06);
+  font-size:.8rem;color:#6e7a85}
+.foot-credit a{color:var(--gold);font-weight:700;transition:.2s}
+.foot-credit a:hover{color:var(--orange)}
 
 /* ===================== CATALOG PAGE ===================== */
 .catalog-head{background:#fff;border-bottom:1px solid var(--line);padding:34px 0 0}
