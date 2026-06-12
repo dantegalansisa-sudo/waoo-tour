@@ -319,7 +319,7 @@ const MAP_LABELS = LNG==='es' ? {
   miches:["Miches","Los Haitises · Montaña Redonda"],
   anamuya:["Anamuya","Monkeyland · Tirolesas"],
   macao:["Macao","Buggies & ATV"],
-  bavaroSea:["Bávaro","Delfines · Seaquarium · Party Boat"],
+  bavaroSea:["Bávaro","Delfines · Seaquarium"],
   pc:["Punta Cana","Coco Bongo · Vida nocturna"],
   capcana:["Cap Cana","Scape Park · Pesca"],
   bayahibe:["Bayahibe","Salidas a Isla Saona"],
@@ -333,7 +333,7 @@ const MAP_LABELS = LNG==='es' ? {
   miches:["Miches","Los Haitises · Montaña Redonda"],
   anamuya:["Anamuya","Monkeyland · Ziplines"],
   macao:["Macao","Buggies & ATVs"],
-  bavaroSea:["Bávaro","Dolphins · Seaquarium · Party Boat"],
+  bavaroSea:["Bávaro","Dolphins · Seaquarium"],
   pc:["Punta Cana","Coco Bongo · Nightlife"],
   capcana:["Cap Cana","Scape Park · Fishing"],
   bayahibe:["Bayahibe","Saona Island departures"],
@@ -346,19 +346,19 @@ const MAP_LABELS = LNG==='es' ? {
 
 /* marcadores: [key, x, y, lx, ly, anchor, href]  (l = posición del texto) */
 const MARKERS = [
-  ["samana",   235,118, 235, 62, "middle", "tours.html?cat=samana"],
-  ["miches",   470,165, 470,118, "middle", "tour.html?id=haitises-redonda"],
-  ["anamuya",  565,275, 470,300, "end",    "tours.html?cat=naturaleza"],
-  ["macao",    690,240, 740,180, "start",  "tours.html?cat=buggies"],
-  ["bavaroSea",748,305, 800,278, "start",  "tours.html?cat=delfines"],
-  ["pc",       765,375, 815,372, "start",  "tours.html?cat=nocturna"],
-  ["capcana",  738,445, 795,452, "start",  "tours.html?q=scape"],
-  ["bayahibe", 528,498, 528,462, "middle", "tours.html?cat=islas"],
-  ["saona",    585,572, 680,590, "start",  "tours.html?q=saona"],
-  ["catalina", 350,558, 350,600, "middle", "tours.html?q=catalina"],
-  ["romana",   432,508, 388,468, "end",    "tours.html?q=chav"],
-  ["higuey",   560,395, 560,355, "middle", "tours.html?cat=cultura"],
-  ["sd",       60,505,  92,565,  "start",  "tours.html?q=santo%20domingo"],
+  ["samana",   270,120, 270, 60, "middle", "tours.html?cat=samana"],
+  ["miches",   480,218, 480,168, "middle", "tour.html?id=haitises-redonda"],
+  ["anamuya",  620,335, 560,368, "end",    "tours.html?cat=naturaleza"],
+  ["macao",    772,298, 828,252, "start",  "tours.html?cat=buggies"],
+  ["bavaroSea",802,352, 858,338, "start",  "tours.html?cat=delfines"],
+  ["pc",       830,412, 872,410, "start",  "tours.html?cat=nocturna"],
+  ["capcana",  806,468, 856,488, "start",  "tours.html?q=scape"],
+  ["bayahibe", 612,508, 612,470, "middle", "tours.html?cat=islas"],
+  ["saona",    718,585, 800,592, "start",  "tours.html?q=saona"],
+  ["catalina", 540,552, 540,600, "middle", "tours.html?q=catalina"],
+  ["romana",   450,518, 432,472, "middle", "tours.html?q=chav"],
+  ["higuey",   690,415, 690,372, "middle", "tours.html?cat=cultura"],
+  ["sd",       55,522,  92,575,  "start",  "tours.html?q=santo%20domingo"],
 ];
 
 function mapSVG(){
@@ -380,49 +380,51 @@ function mapSVG(){
       </g></a>`;
   }).join('');
 
-  return `<svg viewBox="0 0 1000 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de excursiones Punta Cana">
+  return `<svg viewBox="0 0 1080 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de excursiones Punta Cana">
     <defs>
       <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0" stop-color="#16C7C2"/><stop offset=".55" stop-color="#00A6CE"/><stop offset="1" stop-color="#0077A8"/>
       </linearGradient>
       <pattern id="landDots" width="15" height="15" patternUnits="userSpaceOnUse">
-        <circle cx="7.5" cy="7.5" r="2.9" fill="#FBF7F1" opacity=".92"/>
+        <circle cx="7.5" cy="7.5" r="3" fill="#FBF7F1" opacity=".92"/>
       </pattern>
       <pattern id="landDotsSm" width="12" height="12" patternUnits="userSpaceOnUse">
         <circle cx="6" cy="6" r="2.2" fill="#FBF7F1" opacity=".92"/>
       </pattern>
     </defs>
 
-    <rect width="1000" height="660" fill="url(#sea)"/>
-    <path d="M0,330 Q250,300 500,330 T1000,330" stroke="rgba(255,255,255,.07)" stroke-width="2" fill="none"/>
-    <path d="M0,430 Q250,400 500,430 T1000,430" stroke="rgba(255,255,255,.06)" stroke-width="2" fill="none"/>
+    <rect width="1080" height="660" fill="url(#sea)"/>
+    <path d="M0,330 Q270,300 540,330 T1080,330" stroke="rgba(255,255,255,.07)" stroke-width="2" fill="none"/>
+    <path d="M0,440 Q270,410 540,440 T1080,440" stroke="rgba(255,255,255,.06)" stroke-width="2" fill="none"/>
 
-    <!-- tierra firme (este de RD) -->
-    <path fill="url(#landDots)" d="M0,180 C80,168 150,178 220,188 C280,196 320,210 370,204
-      C430,197 460,172 505,166 C570,158 630,176 672,206 C722,238 745,272 757,312
-      C768,346 772,366 764,402 C754,442 734,466 698,486 C650,508 600,514 545,514
-      C480,516 430,521 370,523 C280,527 160,532 0,540 Z"/>
-    <!-- península de Samaná -->
-    <path fill="url(#landDots)" d="M42,122 C92,96 172,80 252,74 C302,70 346,80 353,97
-      C359,112 331,124 291,128 C221,136 131,142 71,144 C46,145 32,135 42,122 Z"/>
-    <!-- Cayo Levantado -->
-    <circle cx="305" cy="158" r="6" fill="#FBF7F1" opacity=".92"/>
-    <!-- Isla Saona -->
-    <ellipse cx="585" cy="575" rx="62" ry="20" fill="url(#landDotsSm)" transform="rotate(-4 585 575)"/>
-    <!-- Isla Catalina -->
-    <ellipse cx="350" cy="558" rx="22" ry="12" fill="url(#landDotsSm)"/>
+    <!-- tierra firme: región este de RD (Sabana de la Mar → Miches → Punta Cana → La Romana) -->
+    <path fill="url(#landDots)" d="M0,225 C90,216 180,212 260,215 C340,218 420,212 480,218
+      C560,226 640,238 700,258 C745,275 775,300 800,335
+      C818,362 830,386 832,412 C833,440 822,458 805,470
+      C775,490 745,495 715,498 C670,503 640,506 610,508
+      C560,512 510,516 450,519 C330,524 160,528 0,533 Z"/>
+    <!-- península de Samaná (brazo hacia el este, con su bahía debajo) -->
+    <path fill="url(#landDots)" d="M0,160 C30,150 62,142 95,138 C140,112 220,92 300,84
+      C350,79 395,84 405,98 C410,112 380,124 335,130 C270,140 180,148 120,152
+      C80,155 35,160 0,163 Z"/>
+    <!-- Cayo Levantado (en la bahía de Samaná) -->
+    <circle cx="330" cy="170" r="6" fill="#FBF7F1" opacity=".92"/>
+    <!-- Isla Saona (frente a la costa sureste) -->
+    <ellipse cx="718" cy="588" rx="64" ry="21" fill="url(#landDotsSm)" transform="rotate(-3 718 588)"/>
+    <!-- Isla Catalina (pegada a La Romana) -->
+    <ellipse cx="540" cy="552" rx="19" ry="11" fill="url(#landDotsSm)"/>
 
     <!-- título -->
     <g class="mapfade" style="--md:0s">
-      <text class="map-title" x="965" y="70" text-anchor="end">Punta Cana</text>
-      <text class="map-sub" x="965" y="98" text-anchor="end">WAOOO TOURS &amp; ADVENTURES</text>
+      <text class="map-title" x="1045" y="70" text-anchor="end">Punta Cana</text>
+      <text class="map-sub" x="1045" y="98" text-anchor="end">WAOOO TOURS &amp; ADVENTURES</text>
     </g>
 
     <!-- barquito animado Bayahibe → Saona -->
     <g class="boat mapfade" style="--md:1.6s">
       <g>
         <animateMotion dur="7s" repeatCount="indefinite" rotate="auto"
-          path="M530,522 C548,538 562,552 578,562"/>
+          path="M618,518 C642,538 668,554 692,566"/>
         <path d="M0,-3 L14,2 L0,7 Z" fill="#fff"/>
         <path d="M3,-3 L3,-14 L11,-3 Z" fill="#FFB400"/>
       </g>
@@ -431,7 +433,7 @@ function mapSVG(){
     ${marks}
 
     <!-- inset de la isla -->
-    <g class="mapfade" style="--md:1.4s" opacity=".95">
+    <g class="mapfade" style="--md:1.4s" opacity=".95" transform="translate(80,0)">
       <rect x="800" y="560" width="186" height="86" rx="12" fill="rgba(11,36,52,.45)"/>
       <path fill="#FBF7F1" opacity=".85" d="M815,605 C825,592 845,588 865,592 C885,586 905,588 925,594
         C945,598 962,602 972,608 C962,616 945,620 925,618 C905,622 885,620 865,616 C845,620 825,616 815,605 Z"/>
