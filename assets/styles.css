@@ -315,8 +315,9 @@ ul{margin:0;padding:0;list-style:none}
   color:#fff;transition:.2s}
 .foot-soc a:hover{background:var(--orange);transform:translateY(-3px)}
 .foot-col h5{color:#fff;font-family:'Bricolage Grotesque';font-size:1.05rem;margin-bottom:18px}
-.foot-col a{display:block;padding:6px 0;font-size:.92rem;transition:.2s}
-.foot-col a:hover{color:var(--gold);padding-left:5px}
+.foot-col a:not(.btn){display:block;padding:6px 0;font-size:.92rem;transition:.2s}
+.foot-col a:not(.btn):hover{color:var(--gold);padding-left:5px}
+.foot-col a.btn{display:inline-flex}
 .foot-contact li{display:flex;gap:11px;align-items:flex-start;padding:7px 0;font-size:.92rem}
 .foot-contact svg{color:var(--orange);flex-shrink:0;margin-top:3px}
 .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:50px;padding-top:24px;
