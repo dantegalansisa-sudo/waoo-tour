@@ -15,8 +15,10 @@ body{background:#f2efe9}
 .adm-top .logo b{color:#fff}
 .adm-top .tag{font-size:.78rem;background:var(--grad-sunset);padding:4px 12px;border-radius:99px;font-weight:800;letter-spacing:.06em}
 .adm-top .spacer{flex:1}
-.adm-top a,.adm-top button{color:#cdd8e0;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:9px;transition:.2s}
+.adm-top a,.adm-top button{color:#cdd8e0;font-weight:600;font-size:.9rem;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:9px;transition:.2s;white-space:nowrap}
 .adm-top a:hover,.adm-top button:hover{background:rgba(255,255,255,.1);color:#fff}
+.adm-top .btn-exit{border:1.5px solid rgba(255,255,255,.3);color:#fff}
+.adm-top .btn-exit:hover{border-color:var(--orange);background:rgba(255,106,19,.15)}
 
 .adm-wrap{max-width:1100px;margin:0 auto;padding:30px 22px 80px}
 .adm-tabs{display:flex;gap:8px;margin-bottom:26px;flex-wrap:wrap}
@@ -99,6 +101,32 @@ body{background:#f2efe9}
 .stat-box b{font-family:'Bricolage Grotesque';font-size:1.8rem;display:block}
 .stat-box span{font-size:.8rem;color:var(--muted);font-weight:700}
 .hidden{display:none!important}
+
+/* ===== móvil (al final para ganar a las reglas base) ===== */
+@media(max-width:640px){
+  .adm-top .wrap{gap:8px;padding:0 14px;height:58px}
+  .adm-top .logo img{height:36px}
+  .adm-top .logo span{display:none}
+  .adm-top .tag{font-size:.62rem;padding:3px 9px}
+  .adm-top a,.adm-top button{padding:8px 11px;font-size:.86rem}
+  .hide-m{display:none}
+  .adm-wrap{padding:20px 14px 60px}
+  .adm-card{padding:20px 16px}
+  .adm-tab{padding:9px 16px;font-size:.88rem}
+  .adm-toolbar input[type=text]{min-width:140px}
+  /* filas de tours en 2 líneas: foto+nombre arriba, precio+botones abajo */
+  .t-row{padding:12px;gap:10px;flex-wrap:wrap}
+  .t-thumb{width:48px;height:40px}
+  .t-info{flex:1 1 calc(100% - 58px);min-width:calc(100% - 58px)}
+  .t-info > span{display:block;margin-top:3px}
+  .t-info .badge-mini{display:block;width:fit-content;margin:5px 0 0}
+  .t-price{font-size:1rem;margin-left:2px}
+  .t-actions{margin-left:auto}
+  .t-actions button{width:36px;height:36px}
+  .login-box{margin:50px 16px;padding:30px 22px}
+  .modal{padding:16px 10px}
+  .modal-card{padding:22px 18px}
+}
 </style>
 </head>
 <body>
@@ -128,8 +156,8 @@ body{background:#f2efe9}
       </a>
       <span class="tag">ADMIN</span>
       <div class="spacer"></div>
-      <a href="index.html" target="_blank">🌐 Ver sitio</a>
-      <button onclick="logout()">Salir →</button>
+      <a href="index.html" target="_blank">🌐<span class="hide-m"> Ver sitio</span></a>
+      <button class="btn-exit" onclick="logout()">Salir →</button>
     </div>
   </div>
 
@@ -150,7 +178,7 @@ body{background:#f2efe9}
       </div>
       <div class="adm-card">
         <h2>Excursiones</h2>
-        <p class="hint">Edita el nombre, precio, categoría o foto de cada tour. Los cambios se guardan al instante en este navegador; usa la pestaña <b>Publicar</b> para hacerlos visibles a todo el mundo.</p>
+        <p class="hint">Edita el nombre, precio, categoría o foto de cada tour. Todo lo que guardes se publica <b>al instante</b> en la web.</p>
         <div class="adm-toolbar">
           <input type="text" id="admSearch" placeholder="Buscar tour..." oninput="renderList()">
           <select id="admCat" onchange="renderList()"></select>
