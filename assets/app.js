@@ -128,7 +128,7 @@ function buildChrome(active){
   const nav = [
     ['index.html', T.nav_home, 'home'],
     ['tours.html', T.nav_tours, 'tours'],
-    ['index.html#categorias', T.nav_cats, 'cats'],
+    ['guia.html', T.nav_guide, 'guide'],
     ['index.html#nosotros', T.nav_about, 'about'],
     ['index.html#contacto', T.nav_contact, 'contact'],
   ];
@@ -196,6 +196,7 @@ function buildFooter(){
       <div class="foot-col"><h5>${T.foot_company}</h5>
         <a href="index.html#nosotros">${T.foot_aboutl}</a>
         <a href="tours.html">${T.nav_tours}</a>
+        <a href="guia.html">${T.nav_guide}</a>
         <a href="tours.html#favoritos">${T.foot_favs}</a>
         <a href="#contacto">${T.nav_contact}</a>
         <a href="#">${T.foot_terms}</a>

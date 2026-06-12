@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Punta Cana · WAOOO Tours</title>
+<meta name="description" content="Guía informativa de excursiones en Punta Cana: Isla Saona, Catalina, Samaná, buggies en Macao, Monkeyland, delfines, Scape Park y más. Mapa interactivo de aventuras WAOOO.">
+<link rel="icon" href="assets/waoo.jpeg">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+/* ===== hero compacto ===== */
+.ghero{background:var(--ink);color:#fff;position:relative;overflow:hidden;padding:70px 0 60px}
+.ghero::before{content:"";position:absolute;top:-40%;right:-8%;width:560px;height:560px;border-radius:50%;
+  background:radial-gradient(circle,rgba(242,72,13,.25),transparent 62%)}
+.ghero::after{content:"";position:absolute;bottom:-50%;left:-10%;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,166,206,.2),transparent 60%)}
+.ghero .wrap{position:relative;z-index:1}
+.ghero h1{font-size:clamp(2.1rem,4.6vw,3.4rem);max-width:18ch}
+.ghero h1 em{font-style:normal;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ghero p{color:#aebcc7;font-size:1.08rem;max-width:60ch;margin:16px 0 0}
+
+/* ===== mapa ===== */
+.map-sec{background:var(--ink);padding:10px 0 90px}
+.map-frame{position:relative;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg)}
+.map-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.map-scroll svg{display:block;min-width:780px;width:100%;height:auto}
+.map-hint{display:none;text-align:center;color:#7d8b98;font-size:.8rem;font-weight:600;padding:10px 0 0}
+@media(max-width:840px){.map-hint{display:block}}
+
+/* animaciones del mapa */
+.mk-dot{fill:var(--gold)}
+.mk-ring{fill:none;stroke:var(--gold);stroke-width:2;opacity:0;transform-origin:center;transform-box:fill-box;
+  animation:mkPulse 2.6s ease-out infinite;animation-delay:var(--pd,0s)}
+@keyframes mkPulse{0%{transform:scale(.3);opacity:.9}70%{transform:scale(1.6);opacity:0}100%{opacity:0}}
+.mk{cursor:pointer}
+.mk circle.mk-dot{transition:.25s;transform-box:fill-box;transform-origin:center}
+.mk:hover circle.mk-dot{transform:scale(1.6);fill:#fff}
+.mk text{transition:.25s}
+.mk:hover .mk-name{fill:var(--gold)}
+.lead-line{stroke:rgba(255,255,255,.55);stroke-width:1.6;stroke-dasharray:1 6;stroke-linecap:round;fill:none}
+.mk-name{fill:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;letter-spacing:.01em;
+  paint-order:stroke;stroke:rgba(8,52,70,.55);stroke-width:4px;stroke-linejoin:round}
+.mk-sub{fill:#e2f3fa;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:12.5px;
+  paint-order:stroke;stroke:rgba(8,52,70,.5);stroke-width:3px;stroke-linejoin:round}
+.zone-tag{fill:var(--gold);font-family:'Plus Jakarta Sans',sans-serif;font-style:italic;font-weight:700;font-size:12px;letter-spacing:.14em}
+.map-title{fill:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:46px;letter-spacing:-.01em}
+.map-sub{fill:rgba(255,255,255,.85);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:15px;letter-spacing:.22em}
+/* entrada escalonada */
+.map-on .mapfade{opacity:0;animation:mapIn .8s ease forwards;animation-delay:var(--md,0s)}
+@keyframes mapIn{to{opacity:1}}
+.boat{animation:boatBob 3.2s ease-in-out infinite}
+@keyframes boatBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+/* ===== nav de secciones ===== */
+.gnav{position:sticky;top:var(--header-h);z-index:40;background:rgba(251,247,241,.92);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.gnav .wrap{display:flex;gap:8px;overflow-x:auto;padding-top:12px;padding-bottom:12px;scrollbar-width:none}
+.gnav .wrap::-webkit-scrollbar{display:none}
+.gnav a{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:999px;
+  padding:8px 16px;font-weight:700;font-size:.85rem;color:var(--ink-soft);transition:.2s;white-space:nowrap}
+.gnav a:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ===== secciones de la guía ===== */
+.gsec{padding:64px 0;border-bottom:1px solid var(--line);scroll-margin-top:calc(var(--header-h) + 70px)}
+.gsec:nth-child(even){background:var(--cream)}
+.gsec .inner{display:grid;grid-template-columns:300px 1fr;gap:46px;align-items:start}
+@media(max-width:880px){.gsec .inner{grid-template-columns:1fr;gap:22px}}
+.gside{position:sticky;top:calc(var(--header-h) + 76px)}
+@media(max-width:880px){.gside{position:static}}
+.gside .gic{width:64px;height:64px;border-radius:18px;background:var(--grad-sunset);color:#fff;
+  display:grid;place-items:center;margin-bottom:16px;box-shadow:0 12px 26px -10px rgba(242,72,13,.5)}
+.gside .gic svg{width:32px;height:32px}
+.gzone{font-size:.76rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);
+  display:inline-flex;align-items:center;gap:7px;margin-bottom:8px}
+.gzone::before{content:"";width:20px;height:2px;background:var(--orange)}
+.gside h2{font-size:1.7rem;margin-bottom:14px}
+.gchips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}
+.gchips span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 13px;
+  font-size:.78rem;font-weight:700;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px}
+.gchips span svg{color:var(--orange)}
+.gbody p{color:var(--ink-soft);font-size:1.02rem;margin:0 0 14px}
+.gknow{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-top:20px}
+.gsec:nth-child(even) .gknow{background:var(--sand)}
+.gknow b.kt{display:flex;align-items:center;gap:9px;font-size:.95rem;margin-bottom:10px;color:var(--ink)}
+.gknow b.kt svg{color:var(--orange)}
+.gknow li{display:flex;gap:9px;align-items:flex-start;color:var(--ink-soft);font-size:.92rem;padding:4px 0}
+.gknow li::before{content:"·";color:var(--orange);font-weight:900;font-size:1.2rem;line-height:1.2}
+.gctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+
+/* tips */
+.tips-band{background:var(--ink);color:#fff;padding:70px 0}
+.tips-band .section-title{color:#fff}
+.tips-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:34px}
+@media(max-width:880px){.tips-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:540px){.tips-grid{grid-template-columns:repeat(2,1fr)}}
+.tip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;
+  padding:18px 14px;text-align:center;font-weight:600;font-size:.88rem;transition:.25s}
+.tip:hover{background:rgba(255,255,255,.12);transform:translateY(-4px)}
+.tip .te{font-size:1.7rem;display:block;margin-bottom:8px}
+.gdisclaimer{color:#7d8b98;font-size:.84rem;text-align:center;margin-top:34px}
+</style>
+</head>
+<body>
+<div id="chrome"></div>
+
+<!-- HERO -->
+<section class="ghero">
+  <div class="wrap">
+    <span class="eyebrow" id="gh-eyebrow"></span>
+    <h1 id="gh-title"></h1>
+    <p id="gh-sub"></p>
+  </div>
+</section>
+
+<!-- MAPA ANIMADO -->
+<section class="map-sec">
+  <div class="wrap">
+    <div class="map-frame">
+      <div class="map-scroll" id="mapScroll"></div>
+    </div>
+    <div class="map-hint" id="mapHint"></div>
+  </div>
+</section>
+
+<!-- NAV DE SECCIONES -->
+<nav class="gnav"><div class="wrap" id="gnavWrap"></div></nav>
+
+<!-- SECCIONES -->
+<div id="guideRoot"></div>
+
+<!-- TIPS -->
+<section class="tips-band">
+  <div class="wrap">
+    <div class="head-row" style="margin-bottom:0">
+      <div>
+        <span class="eyebrow" id="tips-eyebrow"></span>
+        <h2 class="section-title" id="tips-title"></h2>
+      </div>
+    </div>
+    <div class="tips-grid" id="tipsGrid"></div>
+    <p class="gdisclaimer" id="gdisclaimer"></p>
+  </div>
+</section>
+
+<div id="footer-slot"></div>
+
+<script src="assets/data.js"></script>
+<script src="assets/supabase.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(async () => {
+await sbBoot();
+bootCommon('guide');
+
+/* ============ CONTENIDO DE LA GUÍA (ES / EN) ============ */
+const G = {
+es: {
+  eyebrow:"Guía informativa WAOOO",
+  title:"Tu guía de aventuras en <em>Punta Cana</em>",
+  sub:"Todo lo que necesitas saber antes de reservar: destinos, qué se vive en cada excursión y consejos de tu operador local.",
+  map_hint:"← Desliza el mapa para explorar →",
+  tips_eyebrow:"Antes de salir",
+  tips_title:"¿Qué llevar a tu excursión?",
+  tips:[["👕","Ropa cómoda"],["👟","Tenis o sandalia firme"],["🩳","Traje de baño"],["🧴","Bloqueador solar"],["🧢","Gorra o sombrero"],["🕶️","Lentes de sol"],["🦟","Repelente"],["🧖","Toalla"],["👚","Ropa de cambio"],["💵","Efectivo extra"]],
+  disclaimer:"Esta guía es orientativa. La duración, lo incluido y las condiciones exactas de cada excursión están en su página de reserva y pueden variar según la operación diaria.",
+  know:"Bueno saber",
+  cta_zone:"Ver excursiones",
+  dur:"Duración", inc:"Incluye",
+  secs:[
+    {id:"saona", icon:"island", zone:"Bayahibe · Mar Caribe", title:"Isla Saona",
+     p:["La excursión estrella del Caribe. Saldrás desde el pueblo pesquero de Bayahibe en lancha rápida o catamarán, con parada en la famosa piscina natural: un banco de arena en medio del mar de aguas turquesas donde viven las estrellas de mar. En la isla te esperan playas de postal, palmeras, almuerzo buffet dominicano frente al mar y barra libre de bebidas nacionales.",
+      "El regreso es pura fiesta: navegarás a ritmo de merengue y bachata. En las versiones premium se añade paseo por el río Chavón (escenario de películas como Rambo y Jurassic Park), brindis con espumante y almuerzo con langosta."],
+     know:["No apta para embarazadas.","El orden de las actividades puede variar según la operación del día.","Lleva efectivo para fotos y recuerdos."],
+     dur:"Día completo", inc:"Transporte · Almuerzo · Barra libre",
+     ctas:[["Tours a Isla Saona","tours.html?q=saona"]]},
+    {id:"catalina", icon:"diving", zone:"La Romana · Mar Caribe", title:"Isla Catalina",
+     p:["Una isla virgen con una de las mejores paredes de snorkel del país: el arrecife conocido como “La Pared”, un acuario natural repleto de peces tropicales y formaciones de coral. Se llega navegando por el río Cumayasa hasta el mar Caribe.",
+      "En la playa de Catalina tendrás tiempo libre para nadar, hacer snorkel cerca de la costa y disfrutar de un almuerzo buffet junto al mar antes de regresar en catamarán."],
+     know:["Ideal para amantes del snorkel: dos paradas para esnorquelear.","No apta para embarazadas.","Equipo de snorkel incluido en la mayoría de salidas."],
+     dur:"Día completo", inc:"Transporte · Buffet · Bebidas",
+     ctas:[["Tours a Isla Catalina","tours.html?q=catalina"]]},
+    {id:"samana", icon:"mountain", zone:"Península de Samaná", title:"Samaná: cascadas, cayos y ballenas",
+     p:["La península más espectacular del país combina montaña y mar. Podrás cabalgar entre la naturaleza hasta la Cascada El Limón, una cortina de agua de paredes verdes donde te darás un baño inolvidable, y relajarte después en Cayo Levantado (la “Isla Bacardí”), una de las playas más bellas del mundo.",
+      "Otra ruta te lleva a Playa Rincón, en el top 10 mundial, con tiempo para snorkel y paseo a caballo. Y de mediados de enero a mediados de marzo ocurre el gran espectáculo: las ballenas jorobadas llegan a la bahía de Samaná a aparearse y criar — uno de los mejores lugares del planeta para verlas saltar e interactuar con sus crías."],
+     know:["Temporada de ballenas: 15 de enero a 15 de marzo (aprox.).","Lleva calcetines para el paseo a caballo y ropa de cambio.","No apta para embarazadas."],
+     dur:"Día completo", inc:"Transporte · Almuerzo buffet · Bebidas",
+     ctas:[["Tours a Samaná","tours.html?cat=samana"]]},
+    {id:"buggies", icon:"buggy", zone:"Macao · Punta Cana", title:"Buggies por la selva",
+     p:["Adrenalina pura en los caminos rurales de Macao: manejarás tu buggy o ATV entre pueblos del campo dominicano, manglares y senderos de tierra, agua y lodo, con parada en una cueva indígena privada de aguas cristalinas para un baño refrescante y la historia de los taínos, los habitantes precolombinos del Caribe.",
+      "¿Más aventura? Existe la versión nocturna: buggies bajo las estrellas, cuevas iluminadas de noche, cena típica dominicana con pescado fresco en salsa de coco y un show de baile taíno que no olvidarás."],
+     know:["Prepárate para ensuciarte: salpicaduras y barro garantizados.","Edad mínima para conducir: 16-18 años según la opción.","Incluye parada en la famosa playa Macao."],
+     dur:"Medio día (2h30 de ruta aprox.)", inc:"Equipo de seguridad · Guía · Transporte",
+     ctas:[["Tours de Buggies & ATV","tours.html?cat=buggies"]]},
+    {id:"anamuya", icon:"leaf", zone:"Montañas de Anamuya", title:"Monkeyland & tirolesas",
+     p:["A pocos kilómetros de los hoteles comienza la Cordillera Oriental. En Monkeyland recorrerás un jardín botánico y convivirás durante unos 45 minutos con simpáticos monos ardilla entrenados para interactuar contigo — la foto está garantizada. Después visitarás una casa campesina para conocer cómo se vive del campo: café recién tostado, cacao y frutas exóticas con degustación incluida.",
+      "En la misma zona, los parques de aventura ofrecen hasta 5 tirolesas — incluida la más larga del Caribe con más de un kilómetro —, salto “quick jump” de 15 metros, paseos a caballo cruzando ríos y buggies entre cafetales, con buffet dominicano de especialidades como el sancocho."],
+     know:["Apto para toda la familia; los monos son la actividad favorita de los niños.","Peso máximo en tirolesas: 114 kg (250 lb).","Lleva repelente: es zona de montaña."],
+     dur:"Medio día / Día completo", inc:"Transporte · Degustaciones · Guía",
+     ctas:[["Naturaleza & Animales","tours.html?cat=naturaleza"],["Combos con tirolesas","tours.html?q=tirolesas"]]},
+    {id:"bavaro", icon:"dolphin", zone:"Costa de Bávaro", title:"Bávaro: el mar en acción",
+     p:["Frente a las playas de Bávaro está el arrecife que lo hace todo posible. En el Seaquarium harás snorkel con tiburones y rayas, una caminata submarina a 4 metros de profundidad y hasta recibirás el beso de un león marino. En Dolphin Island, un parque sobre el mar, puedes elegir tu nivel de encuentro con los delfines: desde el programa familiar (sin saber nadar) hasta el Royal Swim con remolque dorsal, saltos y acrobacias.",
+      "¿Prefieres la fiesta? El Party Boat navega la costa con música caribeña, cócteles y paradas para nadar; el barco pirata “La Hispaniola” combina snorkel en arrecife virgen, duelos de espadas y nado con tiburones y rayas en Shark Island; y para relajarte, el spa flotante ofrece exfoliación con pececitos garra, masajes y biopilates en altamar."],
+     know:["Los programas con delfines tienen estatura mínima según la opción.","Embarazadas: consulta antes; algunos programas tienen restricciones.","Las piscinas naturales de Punta Cana son parada habitual de los catamaranes."],
+     dur:"Medio día", inc:"Transporte · Snacks · Bebidas a bordo",
+     ctas:[["Delfines & Mar","tours.html?cat=delfines"],["Catamaranes & Fiesta","tours.html?cat=catamaran"]]},
+    {id:"capcana", icon:"crown", zone:"Cap Cana", title:"Scape Park y Cap Cana",
+     p:["El parque de aventuras más completo del destino, dentro del exclusivo complejo de Cap Cana. Tirolesas que vuelan sobre un acantilado, cuevas ancestrales, cenotes de aguas azules para nadar bajo tierra, zip lines acuáticos y hamacas de agua — más playa, snorkel o simplemente relax en el club de playa.",
+      "Cap Cana es también el punto de partida de los charters privados de pesca deportiva en busca de dorado, marlín y atún, y de experiencias VIP como Juanillo Beach."],
+     know:["No apto para embarazadas ni condiciones médicas serias.","Menores de 6 años no pueden subir a las tirolesas.","Lleva zapatos de agua."],
+     dur:"Día completo", inc:"Transporte · Acceso a atracciones",
+     ctas:[["Aventuras en Scape Park","tours.html?q=scape"],["Charters de pesca","tours.html?cat=pesca"]]},
+    {id:"parques", icon:"ticket", zone:"Punta Cana", title:"Parques acuáticos y temáticos",
+     p:["Diversión asegurada para toda la familia. El Dorado Water Park esconde entre la vegetación tropical más de 20 atracciones en 4 zonas temáticas: río lento, piscina de olas, zona de snorkel, playa privada y toboganes para todos los niveles de valentía — los menores de 4 años entran gratis.",
+      "Los parques temáticos de aventura combinan en un solo día la cultura dominicana con tirolesas, caballos, buggies en el lodo, cenotes y gastronomía local, cerrando con fiesta de carnaval."],
+     know:["En los parques acuáticos no se permite entrar comida ni bebidas.","Camas balinesas, cabañas y zonas VIP tienen costo adicional.","Wifi gratis en El Dorado."],
+     dur:"Día completo", inc:"Transporte · Entrada · Equipos",
+     ctas:[["Parques & Tickets","tours.html?cat=parques"]]},
+    {id:"cultura", icon:"landmark", zone:"Santo Domingo · Higüey", title:"Historia y cultura dominicana",
+     p:["Santo Domingo es la primera ciudad de América (1498) y Patrimonio de la Humanidad. Caminarás las calles empedradas de la Zona Colonial para fotografiar la Catedral Primada de América, el Alcázar de Colón, el Panteón Nacional y el Faro a Colón, con almuerzo tradicional y tiempo para artesanías.",
+      "Más cerca, Higüey — capital de La Altagracia — te muestra la República Dominicana real: la imponente Basílica de Nuestra Señora de la Altagracia, los campos de caña, una fábrica de tabaco donde nacen los famosos cigarros dominicanos, y catas de ron, chocolate y café, terminando con el larimar y el ámbar, las piedras nacionales."],
+     know:["En iglesias y la Catedral no se permite entrar con shorts ni hombros descubiertos.","Lleva efectivo para los mercados artesanales.","Higüey es ideal si quieres cultura en medio día."],
+     dur:"Medio día / Día completo", inc:"Transporte · Guía local · Degustaciones",
+     ctas:[["Cultura & City Tours","tours.html?cat=cultura"]]},
+    {id:"noche", icon:"party", zone:"Punta Cana de noche", title:"Vida nocturna",
+     p:["La noche más famosa del Caribe está en Coco Bongo: tres niveles de espectáculo continuo con acróbatas profesionales, musicales en vivo, tributos a las estrellas del entretenimiento y un despliegue impecable de luces y sonido, con barra libre de bebidas nacionales toda la noche (de 9:00 pm a 2:00 am).",
+      "Si lo tuyo es bailar hasta el amanecer, las discotecas locales como Maroca completan el plan con barra libre y la mejor música latina."],
+     know:["Solo mayores de 18 años.","Incluye transporte ida y vuelta desde tu hotel.","Reserva con anticipación: se agota en temporada alta."],
+     dur:"Noche (9pm – 2am)", inc:"Transporte · Barra libre nacional",
+     ctas:[["Vida Nocturna","tours.html?cat=nocturna"]]},
+  ],
+},
+en: {
+  eyebrow:"WAOOO travel guide",
+  title:"Your adventure guide to <em>Punta Cana</em>",
+  sub:"Everything you need to know before you book: destinations, what each excursion feels like, and tips from your local operator.",
+  map_hint:"← Swipe the map to explore →",
+  tips_eyebrow:"Before you go",
+  tips_title:"What to bring on your excursion?",
+  tips:[["👕","Comfortable clothes"],["👟","Sneakers or firm sandals"],["🩳","Swimsuit"],["🧴","Sunscreen"],["🧢","Cap or hat"],["🕶️","Sunglasses"],["🦟","Mosquito repellent"],["🧖","Towel"],["👚","Spare clothes"],["💵","Extra cash"]],
+  disclaimer:"This guide is for orientation. The exact duration, inclusions and conditions of each excursion are listed on its booking page and may vary with daily operations.",
+  know:"Good to know",
+  cta_zone:"View excursions",
+  dur:"Duration", inc:"Includes",
+  secs:[
+    {id:"saona", icon:"island", zone:"Bayahibe · Caribbean Sea", title:"Saona Island",
+     p:["The Caribbean's star excursion. You'll depart from the fishing village of Bayahibe by speedboat or catamaran, stopping at the famous natural pool — a sandbank in the middle of turquoise water where starfish live. On the island: postcard beaches, palm trees, a Dominican buffet lunch by the sea and an open bar of national drinks.",
+      "The ride back is pure party, sailing to merengue and bachata. Premium versions add a cruise down the Chavón River (film set of Rambo and Jurassic Park), a sparkling-wine toast and a lobster lunch."],
+     know:["Not suitable for pregnant women.","The order of activities may change with daily operations.","Bring cash for photos and souvenirs."],
+     dur:"Full day", inc:"Transportation · Lunch · Open bar",
+     ctas:[["Saona Island tours","tours.html?q=saona"]]},
+    {id:"catalina", icon:"diving", zone:"La Romana · Caribbean Sea", title:"Catalina Island",
+     p:["A pristine island with one of the country's best snorkeling walls: the reef known as “The Wall”, a natural aquarium full of tropical fish and coral formations. You'll reach it sailing down the Cumayasa River to the Caribbean Sea.",
+      "On Catalina beach you'll have free time to swim, snorkel near the shore and enjoy a buffet lunch by the sea before returning by catamaran."],
+     know:["A must for snorkel lovers: two snorkeling stops.","Not suitable for pregnant women.","Snorkel gear is included on most departures."],
+     dur:"Full day", inc:"Transportation · Buffet · Drinks",
+     ctas:[["Catalina Island tours","tours.html?q=catalina"]]},
+    {id:"samana", icon:"mountain", zone:"Samaná Peninsula", title:"Samaná: waterfalls, cays & whales",
+     p:["The country's most spectacular peninsula combines mountains and sea. Ride horseback through nature to El Limón Waterfall — a curtain of water over moss-green walls where you'll take an unforgettable swim — then relax on Cayo Levantado (“Bacardí Island”), one of the most beautiful beaches in the world.",
+      "Another route takes you to Playa Rincón, a world top-10 beach, with time for snorkeling and horseback riding. And from mid-January to mid-March comes the great show: humpback whales arrive in Samaná Bay to mate and calve — one of the best places on the planet to watch them breach and play with their young."],
+     know:["Whale season: January 15 to March 15 (approx.).","Bring socks for the horseback ride and spare clothes.","Not suitable for pregnant women."],
+     dur:"Full day", inc:"Transportation · Buffet lunch · Drinks",
+     ctas:[["Samaná tours","tours.html?cat=samana"]]},
+    {id:"buggies", icon:"buggy", zone:"Macao · Punta Cana", title:"Jungle buggies",
+     p:["Pure adrenaline on the rural trails of Macao: drive your buggy or ATV through Dominican countryside villages, mangroves and paths of dirt, water and mud, with a stop at a private indigenous cave with crystal-clear water for a refreshing swim — and the story of the Taínos, the pre-Columbian people of the Caribbean.",
+      "Want more? There's a night version: buggies under the stars, caves illuminated at night, a typical Dominican dinner with fresh fish in coconut sauce and a Taíno dance show you won't forget."],
+     know:["Get ready to get dirty: splashes and mud guaranteed.","Minimum driving age: 16-18 depending on the option.","Includes a stop at the famous Macao beach."],
+     dur:"Half day (approx. 2.5h route)", inc:"Safety equipment · Guide · Transportation",
+     ctas:[["Buggies & ATV tours","tours.html?cat=buggies"]]},
+    {id:"anamuya", icon:"leaf", zone:"Anamuya Mountains", title:"Monkeyland & ziplines",
+     p:["Just a few kilometers from the hotels, the Eastern Cordillera begins. At Monkeyland you'll walk a botanical garden and spend about 45 minutes with friendly squirrel monkeys trained to interact with you — the photo op is guaranteed. Then visit a local country house to see life off the land: freshly roasted coffee, cocoa and exotic fruits, tastings included.",
+      "In the same area, the adventure parks offer up to 5 ziplines — including the longest in the Caribbean at over a kilometer —, a 15-meter quick jump, horseback rides across rivers and buggies through coffee plantations, with a Dominican buffet of specialties like sancocho."],
+     know:["Great for the whole family; the monkeys are kids' favorite activity.","Maximum zipline weight: 114 kg (250 lb).","Bring repellent: it's mountain terrain."],
+     dur:"Half day / Full day", inc:"Transportation · Tastings · Guide",
+     ctas:[["Nature & Animals","tours.html?cat=naturaleza"],["Zipline combos","tours.html?q=zip"]]},
+    {id:"bavaro", icon:"dolphin", zone:"Bávaro Coast", title:"Bávaro: the sea in action",
+     p:["The reef off Bávaro's beaches makes it all possible. At the Seaquarium you'll snorkel with sharks and rays, take an underwater walk 4 meters deep and even get a kiss from a sea lion. At Dolphin Island, a park set on the sea, choose your level of dolphin encounter: from the family program (no swimming required) to the Royal Swim with dorsal tow, jumps and acrobatics.",
+      "Prefer a party? The Party Boat cruises the coast with Caribbean music, cocktails and swim stops; the pirate ship “La Hispaniola” combines reef snorkeling, sword fights and swimming with sharks and rays at Shark Island; and to unwind, the floating spa offers garra-fish foot therapy, massages and bio-pilates at sea."],
+     know:["Dolphin programs have minimum heights depending on the option.","Pregnant travelers: ask first; some programs have restrictions.","Punta Cana's natural pools are a regular catamaran stop."],
+     dur:"Half day", inc:"Transportation · Snacks · Drinks on board",
+     ctas:[["Dolphins & Sea","tours.html?cat=delfines"],["Catamarans & Party","tours.html?cat=catamaran"]]},
+    {id:"capcana", icon:"crown", zone:"Cap Cana", title:"Scape Park & Cap Cana",
+     p:["The destination's most complete adventure park, inside the exclusive Cap Cana resort. Ziplines flying over a cliff, ancient caves, blue-water cenotes for underground swims, water ziplines and water hammocks — plus beach time, snorkeling or simply relaxing at the beach club.",
+      "Cap Cana is also the departure point for private sport-fishing charters chasing mahi-mahi, marlin and tuna, and for VIP experiences like Juanillo Beach."],
+     know:["Not suitable for pregnant women or serious medical conditions.","Children under 6 can't ride the ziplines.","Bring water shoes."],
+     dur:"Full day", inc:"Transportation · Attraction access",
+     ctas:[["Scape Park adventures","tours.html?q=scape"],["Fishing charters","tours.html?cat=pesca"]]},
+    {id:"parques", icon:"ticket", zone:"Punta Cana", title:"Water & theme parks",
+     p:["Guaranteed fun for the whole family. El Dorado Water Park hides more than 20 attractions in 4 themed zones among tropical vegetation: lazy river, wave pool, snorkeling area, private beach and slides for every level of bravery — kids under 4 enter free.",
+      "The adventure theme parks pack Dominican culture, ziplines, horses, mud buggies, cenotes and local cuisine into one day, closing with a carnival party."],
+     know:["Outside food and drinks are not allowed in water parks.","Balinese beds, cabanas and VIP areas cost extra.","Free wifi at El Dorado."],
+     dur:"Full day", inc:"Transportation · Admission · Equipment",
+     ctas:[["Parks & Tickets","tours.html?cat=parques"]]},
+    {id:"cultura", icon:"landmark", zone:"Santo Domingo · Higüey", title:"Dominican history & culture",
+     p:["Santo Domingo is the first city of the Americas (1498) and a World Heritage Site. Walk the cobblestone streets of the Colonial Zone to photograph the First Cathedral of America, the Alcázar de Colón, the National Pantheon and the Columbus Lighthouse, with a traditional lunch and time for artisan markets.",
+      "Closer by, Higüey — capital of La Altagracia — shows you the real Dominican Republic: the imposing Basilica of Our Lady of Altagracia, sugar-cane fields, a tobacco factory where the famous Dominican cigars are born, and rum, chocolate and coffee tastings, ending with larimar and amber, the national stones."],
+     know:["Churches and the Cathedral don't allow shorts or bare shoulders.","Bring cash for the artisan markets.","Higüey is perfect if you want culture in half a day."],
+     dur:"Half day / Full day", inc:"Transportation · Local guide · Tastings",
+     ctas:[["Culture & City Tours","tours.html?cat=cultura"]]},
+    {id:"noche", icon:"party", zone:"Punta Cana by night", title:"Nightlife",
+     p:["The Caribbean's most famous night is at Coco Bongo: three levels of non-stop show with professional acrobats, live musicals, tributes to entertainment stars and an impeccable display of lights and sound, with a national open bar all night long (9:00 pm to 2:00 am).",
+      "If dancing till dawn is your thing, local clubs like Maroca complete the plan with open bar and the best Latin music."],
+     know:["18+ only.","Round-trip hotel transportation included.","Book ahead: it sells out in high season."],
+     dur:"Night (9pm – 2am)", inc:"Transportation · National open bar",
+     ctas:[["Nightlife","tours.html?cat=nocturna"]]},
+  ],
+},
+}[LNG];
+
+document.title = (LNG==='es'?'Guía de Punta Cana':'Punta Cana Guide') + ' · WAOOO Tours';
+document.getElementById('gh-eyebrow').textContent = G.eyebrow;
+document.getElementById('gh-title').innerHTML = G.title;
+document.getElementById('gh-sub').textContent = G.sub;
+document.getElementById('mapHint').textContent = G.map_hint;
+
+/* ============ MAPA ANIMADO ============ */
+const MAP_LABELS = LNG==='es' ? {
+  samana:["Samaná","Cascada El Limón · Ballenas · Cayo Levantado"],
+  miches:["Miches","Los Haitises · Montaña Redonda"],
+  anamuya:["Anamuya","Monkeyland · Tirolesas"],
+  macao:["Macao","Buggies & ATV"],
+  bavaroSea:["Bávaro","Delfines · Seaquarium · Party Boat"],
+  pc:["Punta Cana","Coco Bongo · Vida nocturna"],
+  capcana:["Cap Cana","Scape Park · Pesca"],
+  bayahibe:["Bayahibe","Salidas a Isla Saona"],
+  saona:["Isla Saona",""],
+  catalina:["Isla Catalina",""],
+  romana:["La Romana","Altos de Chavón"],
+  higuey:["Higüey","Basílica · City Tour"],
+  sd:["Santo Domingo","City Tour colonial"],
+} : {
+  samana:["Samaná","El Limón Waterfall · Whales · Cayo Levantado"],
+  miches:["Miches","Los Haitises · Montaña Redonda"],
+  anamuya:["Anamuya","Monkeyland · Ziplines"],
+  macao:["Macao","Buggies & ATVs"],
+  bavaroSea:["Bávaro","Dolphins · Seaquarium · Party Boat"],
+  pc:["Punta Cana","Coco Bongo · Nightlife"],
+  capcana:["Cap Cana","Scape Park · Fishing"],
+  bayahibe:["Bayahibe","Saona Island departures"],
+  saona:["Saona Island",""],
+  catalina:["Catalina Island",""],
+  romana:["La Romana","Altos de Chavón"],
+  higuey:["Higüey","Basilica · City Tour"],
+  sd:["Santo Domingo","Colonial city tour"],
+};
+
+/* marcadores: [key, x, y, lx, ly, anchor, href]  (l = posición del texto) */
+const MARKERS = [
+  ["samana",   235,118, 235, 62, "middle", "tours.html?cat=samana"],
+  ["miches",   470,165, 470,118, "middle", "tour.html?id=haitises-redonda"],
+  ["anamuya",  565,275, 470,300, "end",    "tours.html?cat=naturaleza"],
+  ["macao",    690,240, 740,180, "start",  "tours.html?cat=buggies"],
+  ["bavaroSea",748,305, 800,278, "start",  "tours.html?cat=delfines"],
+  ["pc",       765,375, 815,372, "start",  "tours.html?cat=nocturna"],
+  ["capcana",  738,445, 795,452, "start",  "tours.html?q=scape"],
+  ["bayahibe", 528,498, 528,462, "middle", "tours.html?cat=islas"],
+  ["saona",    585,572, 680,590, "start",  "tours.html?q=saona"],
+  ["catalina", 350,558, 350,600, "middle", "tours.html?q=catalina"],
+  ["romana",   432,508, 388,468, "end",    "tours.html?q=chav"],
+  ["higuey",   560,395, 560,355, "middle", "tours.html?cat=cultura"],
+  ["sd",       60,505,  92,565,  "start",  "tours.html?q=santo%20domingo"],
+];
+
+function mapSVG(){
+  let d = 0;
+  const marks = MARKERS.map(m=>{
+    const [k,x,y,lx,ly,anchor,href] = m;
+    const [name,sub] = MAP_LABELS[k];
+    d += 0.12;
+    /* línea punteada del punto al texto */
+    const line = (Math.abs(lx-x)>4||Math.abs(ly-y)>4)
+      ? `<path class="lead-line" d="M${x},${y} L${lx},${ly>y?ly-16:ly+8}"/>` : '';
+    return `<a href="${href}">
+      <g class="mk mapfade" style="--md:${d.toFixed(2)}s">
+        ${line}
+        <circle class="mk-ring" cx="${x}" cy="${y}" r="13" style="--pd:${(d*2).toFixed(2)}s"/>
+        <circle class="mk-dot" cx="${x}" cy="${y}" r="6.5"/>
+        <text class="mk-name" x="${lx}" y="${ly}" text-anchor="${anchor}">${name}</text>
+        ${sub?`<text class="mk-sub" x="${lx}" y="${ly+17}" text-anchor="${anchor}">${sub}</text>`:''}
+      </g></a>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 1000 660" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de excursiones Punta Cana">
+    <defs>
+      <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#16C7C2"/><stop offset=".55" stop-color="#00A6CE"/><stop offset="1" stop-color="#0077A8"/>
+      </linearGradient>
+      <pattern id="landDots" width="15" height="15" patternUnits="userSpaceOnUse">
+        <circle cx="7.5" cy="7.5" r="2.9" fill="#FBF7F1" opacity=".92"/>
+      </pattern>
+      <pattern id="landDotsSm" width="12" height="12" patternUnits="userSpaceOnUse">
+        <circle cx="6" cy="6" r="2.2" fill="#FBF7F1" opacity=".92"/>
+      </pattern>
+    </defs>
+
+    <rect width="1000" height="660" fill="url(#sea)"/>
+    <path d="M0,330 Q250,300 500,330 T1000,330" stroke="rgba(255,255,255,.07)" stroke-width="2" fill="none"/>
+    <path d="M0,430 Q250,400 500,430 T1000,430" stroke="rgba(255,255,255,.06)" stroke-width="2" fill="none"/>
+
+    <!-- tierra firme (este de RD) -->
+    <path fill="url(#landDots)" d="M0,180 C80,168 150,178 220,188 C280,196 320,210 370,204
+      C430,197 460,172 505,166 C570,158 630,176 672,206 C722,238 745,272 757,312
+      C768,346 772,366 764,402 C754,442 734,466 698,486 C650,508 600,514 545,514
+      C480,516 430,521 370,523 C280,527 160,532 0,540 Z"/>
+    <!-- península de Samaná -->
+    <path fill="url(#landDots)" d="M42,122 C92,96 172,80 252,74 C302,70 346,80 353,97
+      C359,112 331,124 291,128 C221,136 131,142 71,144 C46,145 32,135 42,122 Z"/>
+    <!-- Cayo Levantado -->
+    <circle cx="305" cy="158" r="6" fill="#FBF7F1" opacity=".92"/>
+    <!-- Isla Saona -->
+    <ellipse cx="585" cy="575" rx="62" ry="20" fill="url(#landDotsSm)" transform="rotate(-4 585 575)"/>
+    <!-- Isla Catalina -->
+    <ellipse cx="350" cy="558" rx="22" ry="12" fill="url(#landDotsSm)"/>
+
+    <!-- título -->
+    <g class="mapfade" style="--md:0s">
+      <text class="map-title" x="965" y="70" text-anchor="end">Punta Cana</text>
+      <text class="map-sub" x="965" y="98" text-anchor="end">WAOOO TOURS &amp; ADVENTURES</text>
+    </g>
+
+    <!-- barquito animado Bayahibe → Saona -->
+    <g class="boat mapfade" style="--md:1.6s">
+      <g>
+        <animateMotion dur="7s" repeatCount="indefinite" rotate="auto"
+          path="M530,522 C548,538 562,552 578,562"/>
+        <path d="M0,-3 L14,2 L0,7 Z" fill="#fff"/>
+        <path d="M3,-3 L3,-14 L11,-3 Z" fill="#FFB400"/>
+      </g>
+    </g>
+
+    ${marks}
+
+    <!-- inset de la isla -->
+    <g class="mapfade" style="--md:1.4s" opacity=".95">
+      <rect x="800" y="560" width="186" height="86" rx="12" fill="rgba(11,36,52,.45)"/>
+      <path fill="#FBF7F1" opacity=".85" d="M815,605 C825,592 845,588 865,592 C885,586 905,588 925,594
+        C945,598 962,602 972,608 C962,616 945,620 925,618 C905,622 885,620 865,616 C845,620 825,616 815,605 Z"/>
+      <rect x="930" y="588" width="44" height="34" rx="4" fill="none" stroke="#FF6A13" stroke-width="2.5"/>
+      <text x="893" y="638" text-anchor="middle" fill="#fff" font-family="Plus Jakarta Sans" font-weight="700" font-size="10.5" letter-spacing=".12em">REPÚBLICA DOMINICANA</text>
+    </g>
+  </svg>`;
+}
+const mapScroll = document.getElementById('mapScroll');
+mapScroll.innerHTML = mapSVG();
+
+/* animación de entrada del mapa al verlo */
+new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('map-on');o.unobserve(e.target)}})},{threshold:.2})
+  .observe(mapScroll);
+
+/* ============ NAV + SECCIONES ============ */
+document.getElementById('gnavWrap').innerHTML =
+  G.secs.map(s=>`<a href="#${s.id}">${s.title}</a>`).join('');
+
+document.getElementById('guideRoot').innerHTML = G.secs.map(s=>`
+  <section class="gsec" id="${s.id}">
+    <div class="wrap"><div class="inner">
+      <div class="gside reveal">
+        <div class="gic">${IC[s.icon]||IC.island}</div>
+        <span class="gzone">${s.zone}</span>
+        <h2>${s.title}</h2>
+        <div class="gchips">
+          <span>${IC.clock} ${G.dur}: ${s.dur}</span>
+          <span>${IC.check} ${s.inc}</span>
+        </div>
+      </div>
+      <div class="gbody reveal">
+        ${s.p.map(p=>`<p>${p}</p>`).join('')}
+        <div class="gknow">
+          <b class="kt">${IC.shield} ${G.know}</b>
+          <ul>${s.know.map(k=>`<li>${k}</li>`).join('')}</ul>
+        </div>
+        <div class="gctas">
+          ${s.ctas.map((c,i)=>`<a class="btn ${i===0?'btn-primary':'btn-outline'}" href="${c[1]}">${c[0]} →</a>`).join('')}
+        </div>
+      </div>
+    </div></div>
+  </section>`).join('');
+
+/* tips */
+document.getElementById('tips-eyebrow').textContent = G.tips_eyebrow;
+document.getElementById('tips-title').textContent = G.tips_title;
+document.getElementById('tipsGrid').innerHTML =
+  G.tips.map(t=>`<div class="tip"><span class="te">${t[0]}</span>${t[1]}</div>`).join('');
+document.getElementById('gdisclaimer').textContent = G.disclaimer;
+
+initReveal();
+})();
+</script>
+</body>
+</html>

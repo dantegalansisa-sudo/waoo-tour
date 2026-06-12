@@ -6,6 +6,12 @@
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "5511"],
       "port": 5511
+    },
+    {
+      "name": "waooo-alt",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "5519"],
+      "port": 5519
     }
   ]
 }
