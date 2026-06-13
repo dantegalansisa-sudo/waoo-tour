@@ -87,6 +87,30 @@
 .gknow li::before{content:"·";color:var(--orange);font-weight:900;font-size:1.2rem;line-height:1.2}
 .gctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 
+/* foto de portada de la sección */
+.gcover{position:relative;border-radius:var(--radius);overflow:hidden;margin-bottom:18px;
+  box-shadow:var(--shadow);aspect-ratio:4/5;cursor:zoom-in}
+.gcover img{width:100%;height:100%;object-fit:cover;transition:.55s}
+.gcover:hover img{transform:scale(1.05)}
+.gcover-cap{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 14px;
+  background:linear-gradient(transparent,rgba(8,18,26,.85));color:#fff;
+  font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.02rem;line-height:1.2}
+.gcover-tag{position:absolute;top:12px;left:12px;background:var(--grad-sunset);color:#fff;
+  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;box-shadow:0 6px 16px -4px rgba(242,72,13,.6)}
+.gcover-tag svg{width:22px;height:22px}
+@media(max-width:880px){.gcover{aspect-ratio:16/10}}
+
+/* galería de fotos de los tours */
+.gphotos-title{font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange);margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.gphotos-title::before{content:"";width:20px;height:2px;background:var(--orange)}
+.gphotos{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:14px}
+.gphoto{cursor:zoom-in}
+.gphoto-img{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:3/4;box-shadow:var(--shadow-sm)}
+.gphoto-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.gphoto:hover .gphoto-img img{transform:scale(1.07)}
+.gphoto-cap{font-size:.8rem;font-weight:700;color:var(--ink-soft);margin-top:8px;line-height:1.25}
+
 /* tips */
 .tips-band{background:var(--ink);color:#fff;padding:70px 0}
 .tips-band .section-title{color:#fff}
@@ -313,6 +337,56 @@ document.getElementById('gh-title').innerHTML = G.title;
 document.getElementById('gh-sub').textContent = G.sub;
 document.getElementById('mapHint').textContent = G.map_hint;
 
+/* ============ FOTOS POR SECCIÓN (cada tour su foto) ============
+   formato: id => [ [archivo, nombre_es, nombre_en], ... ]
+   la primera foto es la portada de la sección. */
+const GP = {
+  saona:[
+    ["saona-blue-paradise","Saona Blue Paradise","Saona Blue Paradise"],
+    ["saona-island-deluxe","Isla Saona Deluxe","Saona Island Deluxe"],
+    ["saona-snorkel","Saona Snorkel","Saona Snorkel"],
+  ],
+  catalina:[
+    ["catalina-island","Isla Catalina","Catalina Island"],
+  ],
+  samana:[
+    ["samana-spectacular","Samaná Spectacular","Samaná Spectacular"],
+    ["samana-adventure","Samaná Adventure","Samaná Adventure"],
+    ["samana-whales","Ballenas de Samaná","Samaná Whales"],
+  ],
+  buggies:[
+    ["buggy-adventure","Aventura en Buggy","Buggy Adventure"],
+    ["unique-cave","Buggies nocturnos en cueva","Unique Cave Night Buggies"],
+  ],
+  anamuya:[
+    ["monkeyland","Monkeyland","Monkeyland"],
+    ["la-hacienda-park","La Hacienda · Tirolesas","La Hacienda · Ziplines"],
+  ],
+  bavaro:[
+    ["seaquarium-punta-cana","Seaquarium Punta Cana","Seaquarium Punta Cana"],
+    ["dolphin-island","Dolphin Island","Dolphin Island"],
+    ["party-boat","Party Boat","Party Boat"],
+    ["caribbean-pirates","Caribbean Pirates","Caribbean Pirates"],
+    ["doctor-fish-ocean-spa","Doctor Fish Ocean Spa","Doctor Fish Ocean Spa"],
+  ],
+  capcana:[
+    ["scape-park-full-admission","Scape Park","Scape Park"],
+  ],
+  parques:[
+    ["el-dorado-park","El Dorado Water Park","El Dorado Water Park"],
+    ["domitai-park","Domitai Park","Domitai Park"],
+  ],
+  cultura:[
+    ["santo-domingo-city-tour","Santo Domingo City Tour","Santo Domingo City Tour"],
+    ["higuey-city-tour","Higüey City Tour","Higüey City Tour"],
+  ],
+  noche:[
+    ["coco-bongo","Coco Bongo","Coco Bongo"],
+  ],
+};
+const photoName = p => LNG==='en' ? p[2] : p[1];
+const ALLPHOTOS = [];   /* para el visor: {src, cap} en orden de aparición */
+
 /* ============ MAPA ANIMADO ============ */
 const MAP_LABELS = LNG==='es' ? {
   samana:["Samaná","Cascada El Limón · Ballenas · Cayo Levantado"],
@@ -453,11 +527,42 @@ new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting){e.target.c
 document.getElementById('gnavWrap').innerHTML =
   G.secs.map(s=>`<a href="#${s.id}">${s.title}</a>`).join('');
 
-document.getElementById('guideRoot').innerHTML = G.secs.map(s=>`
+const galleryLabel = LNG==='en' ? 'The experiences' : 'Las experiencias';
+let pIdx = 0;
+document.getElementById('guideRoot').innerHTML = G.secs.map(s=>{
+  const photos = GP[s.id] || [];
+  const cover = photos[0];
+  const rest = photos.slice(1);
+
+  let coverHTML = `<div class="gic">${IC[s.icon]||IC.island}</div>`;
+  if(cover){
+    const ci = pIdx++;
+    ALLPHOTOS[ci] = {src:`assets/fotos/${cover[0]}.jpg`, cap:photoName(cover)};
+    coverHTML = `<div class="gcover" onclick="openLB(${ci})">
+        <img src="assets/fotos/${cover[0]}.jpg" alt="${photoName(cover)}" loading="lazy">
+        <div class="gcover-tag">${IC[s.icon]||IC.island}</div>
+        <div class="gcover-cap">${photoName(cover)}</div>
+      </div>`;
+  }
+
+  let galleryHTML = '';
+  if(rest.length){
+    galleryHTML = `<div class="gphotos-title">${galleryLabel}</div>
+      <div class="gphotos">${rest.map(p=>{
+        const gi = pIdx++;
+        ALLPHOTOS[gi] = {src:`assets/fotos/${p[0]}.jpg`, cap:photoName(p)};
+        return `<div class="gphoto" onclick="openLB(${gi})">
+          <div class="gphoto-img"><img src="assets/fotos/${p[0]}.jpg" alt="${photoName(p)}" loading="lazy"></div>
+          <div class="gphoto-cap">${photoName(p)}</div>
+        </div>`;
+      }).join('')}</div>`;
+  }
+
+  return `
   <section class="gsec" id="${s.id}">
     <div class="wrap"><div class="inner">
       <div class="gside reveal">
-        <div class="gic">${IC[s.icon]||IC.island}</div>
+        ${coverHTML}
         <span class="gzone">${s.zone}</span>
         <h2>${s.title}</h2>
         <div class="gchips">
@@ -471,12 +576,41 @@ document.getElementById('guideRoot').innerHTML = G.secs.map(s=>`
           <b class="kt">${IC.shield} ${G.know}</b>
           <ul>${s.know.map(k=>`<li>${k}</li>`).join('')}</ul>
         </div>
+        ${galleryHTML}
         <div class="gctas">
           ${s.ctas.map((c,i)=>`<a class="btn ${i===0?'btn-primary':'btn-outline'}" href="${c[1]}">${c[0]} →</a>`).join('')}
         </div>
       </div>
     </div></div>
-  </section>`).join('');
+  </section>`;
+}).join('');
+
+/* ============ VISOR (lightbox) ============ */
+(function(){
+  const lb = document.createElement('div');
+  lb.className = 'lb'; lb.id = 'glb';
+  lb.innerHTML = `<button class="lb-x" onclick="closeLB()">✕</button>
+    <button class="lb-prev" onclick="lbNav(-1)">‹</button>
+    <img id="glbImg" alt="">
+    <button class="lb-next" onclick="lbNav(1)">›</button>
+    <span class="lb-count" id="glbCount"></span>`;
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+  document.body.appendChild(lb);
+  let i = 0;
+  function show(){
+    document.getElementById('glbImg').src = ALLPHOTOS[i].src;
+    document.getElementById('glbCount').textContent = ALLPHOTOS[i].cap + '  ·  ' + (i+1) + ' / ' + ALLPHOTOS.length;
+  }
+  window.openLB = n => { i = n; show(); lb.classList.add('open'); };
+  window.closeLB = () => lb.classList.remove('open');
+  window.lbNav = d => { i = (i+d+ALLPHOTOS.length)%ALLPHOTOS.length; show(); };
+  document.addEventListener('keydown', e=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') closeLB();
+    else if(e.key==='ArrowRight') lbNav(1);
+    else if(e.key==='ArrowLeft') lbNav(-1);
+  });
+})();
 
 /* tips */
 document.getElementById('tips-eyebrow').textContent = G.tips_eyebrow;
