@@ -95,9 +95,22 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero">
-  <video autoplay muted loop playsinline poster="assets/waoo.jpeg">
-    <source src="assets/hero.mp4" type="video/mp4">
-  </video>
+  <video id="heroVideo" autoplay muted loop playsinline preload="none" poster="assets/hero-poster.jpg"></video>
+  <script>
+    /* El video solo se descarga en pantallas grandes o buena conexión.
+       En móvil queda la foto (poster): carga mucho más rápido. */
+    (function(){
+      const v = document.getElementById('heroVideo');
+      const c = navigator.connection || {};
+      const pantallaChica = window.matchMedia('(max-width: 820px)').matches;
+      const conexionLenta = c.saveData === true || /(^|-)(2g|slow-2g)$/.test(c.effectiveType || '');
+      if(!v || pantallaChica || conexionLenta) return;
+      const s = document.createElement('source');
+      s.src = 'assets/hero.mp4'; s.type = 'video/mp4';
+      v.appendChild(s); v.load();
+      v.play().catch(function(){});
+    })();
+  </script>
   <div class="wrap">
     <div class="hero-badge" data-i18n="hero_badge">⭐ <b>4.9/5</b> · +12.000 viajeros felices en Punta Cana</div>
     <h1 data-i18n="hero_h1">Vive Punta Cana <em>como nunca</em> la habías soñado</h1>
