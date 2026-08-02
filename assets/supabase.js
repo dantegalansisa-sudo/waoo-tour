@@ -48,5 +48,7 @@ async function sbBoot(){
     }
     if(res.settings) Object.assign(WAOOO, res.settings);
   }
+  /* fotos por defecto para los tours que aún no tienen una propia */
+  if(typeof applyTourPhotos === 'function') applyTourPhotos();
   return SB_LIVE;
 }
