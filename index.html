@@ -213,12 +213,16 @@
 
   /* zones */
   document.getElementById('zoneGrid').innerHTML = [
-    ['Bávaro & Punta Cana','',''],
-    ['Isla Saona & Catalina','1','islas'],
-    ['Cap Cana','2','privados'],
-    ['Samaná','3','samana'],
-  ].map((z,i)=>`<a class="zone" data-z="${z[1]}" href="tours.html${z[2]?'?cat='+z[2]:''}">
-      <div class="zone-info"><b>${z[0]}</b><span>${T.zones[i]}</span></div></a>`).join('');
+    ['Bávaro & Punta Cana','','','punta-cana'],
+    ['Isla Saona & Catalina','1','islas','saona-catalina'],
+    ['Cap Cana','2','privados','cap-cana'],
+    ['Samaná','3','samana','samana'],
+  ].map((z,i)=>{
+    const foto = (typeof ZONE_PHOTOS!=='undefined') ? ZONE_PHOTOS[z[3]] : null;
+    return `<a class="zone${foto?' has-photo':''}" data-z="${z[1]}" href="tours.html${z[2]?'?cat='+z[2]:''}">
+      ${foto?`<img class="zone-img" src="${foto}" alt="${z[0]}" loading="lazy">`:''}
+      <div class="zone-info"><b>${z[0]}</b><span>${T.zones[i]}</span></div></a>`;
+  }).join('');
 
   /* testimonials */
   document.getElementById('testiGrid').innerHTML = T.testi.map(t=>`<div class="testi">

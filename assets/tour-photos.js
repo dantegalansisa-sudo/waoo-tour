@@ -9,6 +9,10 @@
    Para agregar una foto nueva:
      1) pon el archivo en  assets/fotos/hero/mi-foto.jpg
      2) escribe aquí:      "id-del-tour": "mi-foto",
+
+   Para varias fotos (la primera es la de la tarjeta y las demás
+   forman la galería de la página del tour):
+        "id-del-tour": ["tours/mi-foto-1", "tours/mi-foto-2"],
    ============================================================ */
 
 const TOUR_PHOTOS = {
@@ -90,14 +94,53 @@ const TOUR_PHOTOS = {
 
   /* --- Vida nocturna --- */
   "cocobongo-premium":       "coco-bongo",
+
+  /* ===== Fotos nuevas del cliente (3 por servicio) ===== */
+
+  /* --- Parasailing --- */
+  "parasailing-ind":    ["tours/parasailing-1","tours/parasailing-2","tours/parasailing-3"],
+  "parasailing-doble":  ["tours/parasailing-1","tours/parasailing-2","tours/parasailing-3"],
+  "parasailing-triple": ["tours/parasailing-1","tours/parasailing-2","tours/parasailing-3"],
+  "parasailing-mama":   ["tours/parasailing-1","tours/parasailing-2","tours/parasailing-3"],
+
+  /* --- Snorkel & buceo --- */
+  "marinarium":      ["tours/marinarium-1","tours/marinarium-2","tours/marinarium-3"],
+  "reef-explorer":   ["tours/reef-explorer-1","tours/reef-explorer-2","tours/reef-explorer-3"],
+  "snorkeling-pc":   ["tours/snorkeling-1","tours/snorkeling-2","tours/snorkeling-3"],
+  "padi-doble":      ["tours/padi-doble-1","tours/padi-doble-2","tours/padi-doble-3"],
+  "buceo-discover":  ["tours/buceo-1","tours/buceo-2","tours/buceo-3"],
+  "openwater":       ["tours/buceo-1","tours/buceo-2","tours/buceo-3"],
+  "padi-individual": ["tours/buceo-1","tours/buceo-2","tours/buceo-3"],
+
+  /* --- Evolution Adventure Park --- */
+  "evolution-full":         ["tours/evolution-1","tours/evolution-2","tours/evolution-3"],
+  "evolution-unica":        ["tours/evolution-1","tours/evolution-2","tours/evolution-3"],
+  "evolution-degustacion":  ["tours/evolution-1","tours/evolution-2","tours/evolution-3"],
 };
 
-/* Aplica las fotos por defecto a los tours que no tengan una propia. */
+/* Fotos de la sección "Aventuras en cada rincón" (index.html) */
+const ZONE_PHOTOS = {
+  "punta-cana":     "assets/fotos/zonas/punta-cana.jpg",
+  "saona-catalina": "assets/fotos/zonas/saona-catalina.jpg",
+  "cap-cana":       "assets/fotos/zonas/cap-cana.jpg",
+  "samana":         "assets/fotos/zonas/samana.jpg",
+};
+
+/* Aplica las fotos por defecto a los tours que no tengan una propia.
+   Acepta un solo nombre ("mi-foto", vive en assets/fotos/hero/) o una
+   lista ["tours/foto-1","tours/foto-2"] donde la primera es la de la
+   tarjeta y el resto forman la galería. */
 function applyTourPhotos(){
   if(typeof TOURS === 'undefined') return;
   TOURS.forEach(t => {
-    if(!t.image && TOUR_PHOTOS[t.id]){
-      t.image = 'assets/fotos/hero/' + TOUR_PHOTOS[t.id] + '.jpg';
+    if(t.image) return;                      // el cliente ya subió la suya
+    const p = TOUR_PHOTOS[t.id];
+    if(!p) return;
+    const files = Array.isArray(p) ? p : [p];
+    const url = f => 'assets/fotos/' + (f.includes('/') ? f : 'hero/' + f) + '.jpg';
+    t.image = url(files[0]);
+    if(files.length > 1 && !(t.gallery || []).length){
+      t.gallery = files.slice(1).map(url);
     }
   });
 }

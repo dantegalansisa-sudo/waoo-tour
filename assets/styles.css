@@ -275,6 +275,11 @@ ul{margin:0;padding:0;list-style:none}
 .zone[data-z="2"]::before{background:linear-gradient(160deg,#16C7C2,#0077A8)}
 .zone[data-z="3"]::before{background:linear-gradient(160deg,#FFB400,#F2480D)}
 .zone::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.45))}
+/* zonas con foto real */
+.zone-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.zone.has-photo::before{opacity:0}
+.zone.has-photo::after{background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72))}
+.zone.has-photo:hover .zone-img{transform:scale(1.07)}
 .zone-info{position:relative;z-index:1}
 .zone-info b{font-family:'Bricolage Grotesque';font-size:1.5rem;display:block;line-height:1.1}
 .zone-info span{font-size:.84rem;opacity:.92;font-weight:600}
