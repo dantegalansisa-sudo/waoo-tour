@@ -3,8 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Excursión · WAOOO Tours Punta Cana</title>
+<title>Excursión en Punta Cana | WAOOO Tours and Adventures</title>
+<meta name="description" content="Detalles, precio y reserva de esta excursión en Punta Cana con WAOOO Tours: operador local, cancelación gratis 24h antes y reserva directa por WhatsApp.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#FF6A13">
+
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="WAOOO Tours and Adventures">
+<meta property="og:locale" content="es_DO">
+<meta property="og:title" content="Excursión en Punta Cana | WAOOO Tours">
+<meta property="og:description" content="Reserva tu excursión en Punta Cana con tu operador local. Cancelación gratis 24h antes.">
+<meta property="og:image" content="https://www.waoootoursrd.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.waoootoursrd.com/assets/og-image.jpg">
+
 <link rel="icon" href="assets/waoo.jpeg">
+<link rel="apple-touch-icon" href="assets/waoo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -59,6 +78,68 @@
 
     /* galería: foto principal + fotos extra del tour (t.image + t.gallery) */
     const photos = [t.image, ...(t.gallery||[])].filter(Boolean);
+
+    /* ---------- SEO de esta excursión ---------- */
+    (function(){
+      const SITIO = 'https://www.waoootoursrd.com';
+      const urlTour = SITIO + '/tour.html?id=' + encodeURIComponent(t.id);
+      const abs = u => u ? (u.startsWith('http') ? u : SITIO + '/' + u.replace(/^\.?\//,'')) : SITIO + '/assets/og-image.jpg';
+      const desc = `${name} en ${t.zone}, Punta Cana. Desde ${money(t.price)} USD por persona · ${durLabel(t.duration)}. ${blurb}`
+        .replace(/\s+/g,' ').slice(0,300).trim();
+
+      const set = (sel, attr, val) => {
+        let el = document.head.querySelector(sel);
+        if(!el){
+          el = document.createElement(sel.startsWith('link') ? 'link' : 'meta');
+          if(sel.includes('property=')) el.setAttribute('property', sel.match(/property="([^"]+)"/)[1]);
+          else if(sel.includes('name=')) el.setAttribute('name', sel.match(/name="([^"]+)"/)[1]);
+          else if(sel.includes('rel=')) el.setAttribute('rel', sel.match(/rel="([^"]+)"/)[1]);
+          document.head.appendChild(el);
+        }
+        el.setAttribute(attr, val);
+      };
+      set('meta[name="description"]', 'content', desc.slice(0,160));
+      set('link[rel="canonical"]', 'href', urlTour);
+      set('meta[property="og:title"]', 'content', name + ' | WAOOO Tours Punta Cana');
+      set('meta[property="og:description"]', 'content', desc.slice(0,200));
+      set('meta[property="og:url"]', 'content', urlTour);
+      set('meta[property="og:image"]', 'content', abs(photos[0]));
+      set('meta[name="twitter:image"]', 'content', abs(photos[0]));
+
+      const ld = {
+        "@context":"https://schema.org",
+        "@type":"Product",
+        "name": name,
+        "description": desc,
+        "image": photos.length ? photos.map(abs) : [SITIO + '/assets/og-image.jpg'],
+        "category": catLabel(t.cat),
+        "brand": { "@type":"Brand", "name":"WAOOO Tours and Adventures" },
+        "offers": {
+          "@type":"Offer",
+          "url": urlTour,
+          "price": t.price,
+          "priceCurrency":"USD",
+          "availability":"https://schema.org/InStock",
+          "seller": { "@type":"TravelAgency", "name":"WAOOO Tours and Adventures", "@id": SITIO + "/#organizacion" }
+        }
+      };
+      const bc = {
+        "@context":"https://schema.org",
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Inicio","item":SITIO + "/"},
+          {"@type":"ListItem","position":2,"name":T.nav_tours,"item":SITIO + "/tours.html"},
+          {"@type":"ListItem","position":3,"name":catLabel(t.cat),"item":SITIO + "/tours.html?cat=" + t.cat},
+          {"@type":"ListItem","position":4,"name":name,"item":urlTour}
+        ]
+      };
+      [ld, bc].forEach(obj => {
+        const s = document.createElement('script');
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(obj);
+        document.head.appendChild(s);
+      });
+    })();
     const slot = i => {
       if(photos[i]){
         const more = (i===2 && photos.length>3) ? `<span class="g-more">+${photos.length-3}</span>` : '';

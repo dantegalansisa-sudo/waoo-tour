@@ -4,9 +4,10 @@
    ============================================================ */
 
 const WAOOO = {
-  phone: "18294312369",            // llamadas
-  phoneDisplay: "+1 829-431-2369",
-  wa: "18296318364",               // WhatsApp oficial
+  /* Número único de contacto (llamadas y WhatsApp) */
+  phone: "18296318364",
+  phoneDisplay: "+1 829-631-8364",
+  wa: "18296318364",
   waDisplay: "+1 829-631-8364",
   email: "waoooinfotours1727@gmail.com",
   facebook: "https://www.facebook.com/profile.php?id=100054507609021",

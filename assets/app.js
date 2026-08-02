@@ -121,7 +121,7 @@ function buildChrome(active){
   const topbar = `<div class="topbar"><div class="wrap">
     <div class="tb-left">${IC.star}<span>${T.topbar_tag}</span></div>
     <div class="tb-right">
-      <a href="tel:+${WAOOO.phone}">${IC.phone} ${WAOOO.phoneDisplay}</a>
+      <a href="tel:+${WAOOO.wa}">${IC.phone} ${WAOOO.waDisplay}</a>
       <a class="hide-sm" href="mailto:${WAOOO.email}">${IC.mail} ${WAOOO.email}</a>
     </div></div></div>`;
 
@@ -204,7 +204,7 @@ function buildFooter(){
       <div class="foot-col"><h5>${T.nav_contact}</h5>
         <ul class="foot-contact">
           <li>${IC.pin}<span>Punta Cana, La Altagracia,<br>República Dominicana</span></li>
-          <li>${IC.phone}<a href="tel:+${WAOOO.phone}">${WAOOO.phoneDisplay}</a></li>
+          <li>${IC.phone}<a href="tel:+${WAOOO.wa}">${WAOOO.waDisplay}</a></li>
           <li>${IC.wa}<a href="https://wa.me/${WAOOO.wa}" target="_blank">${T.wa_label}${WAOOO.waDisplay}</a></li>
           <li>${IC.mail}<a href="mailto:${WAOOO.email}">${WAOOO.email}</a></li>
           <li>${IC.fb}<a href="${WAOOO.facebook}" target="_blank" rel="noopener">${T.foot_fb}</a></li>

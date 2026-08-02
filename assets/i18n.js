@@ -185,8 +185,8 @@ const INCLUDES_EN = {
 /* ---------- textos de interfaz ---------- */
 const STR = {
 es: {
-  title_home:"WAOOO Tours and Adventures · Excursiones en Punta Cana",
-  title_catalog:"Excursiones, Tours y Tickets en Punta Cana · WAOOO Tours",
+  title_home:"Excursiones en Punta Cana | WAOOO Tours and Adventures",
+  title_catalog:"Tours y Excursiones en Punta Cana · Precios | WAOOO Tours",
   topbar_tag:"Operador local en Punta Cana · Reserva directa sin intermediarios",
   nav_home:"Inicio", nav_tours:"Excursiones", nav_cats:"Categorías", nav_about:"Nosotros", nav_contact:"Contacto",
   nav_guide:"Guía Punta Cana",
@@ -242,7 +242,7 @@ es: {
   book_from:"Desde", book_per:"USD / persona", book_date:"Fecha", book_trav:"Viajeros",
   book_total:"Total estimado", book_btn:"Reservar por WhatsApp", book_share:"Compartir / Cotizar",
   book_cancel:"Cancelación gratuita hasta 24h antes",
-  book_help: w=>`¿Dudas? Llámanos al <a href="tel:+${w.phone}">${w.phoneDisplay}</a> o escríbenos por WhatsApp al <a href="https://wa.me/${w.wa}" target="_blank">${w.waDisplay}</a>. Atención local 24/7.`,
+  book_help: w=>`¿Dudas? Llámanos o escríbenos por WhatsApp al <a href="https://wa.me/${w.wa}" target="_blank">${w.waDisplay}</a>. Atención local 24/7.`,
   person:"persona", people:"personas", group9:"9+ personas (grupo)",
   ey_rel:"Te puede gustar", ti_rel:"Aventuras similares",
   nf_t:"Excursión no encontrada", nf_btn:"Ver todas las excursiones",
@@ -257,8 +257,8 @@ es: {
   foot_credit:"Sitio web diseñado y desarrollado por",
 },
 en: {
-  title_home:"WAOOO Tours and Adventures · Excursions in Punta Cana",
-  title_catalog:"Excursions, Tours & Tickets in Punta Cana · WAOOO Tours",
+  title_home:"Punta Cana Excursions & Tours | WAOOO Tours and Adventures",
+  title_catalog:"Punta Cana Tours & Excursions · Prices | WAOOO Tours",
   topbar_tag:"Local operator in Punta Cana · Book direct, no middlemen",
   nav_home:"Home", nav_tours:"Excursions", nav_cats:"Categories", nav_about:"About us", nav_contact:"Contact",
   nav_guide:"Punta Cana Guide",
@@ -314,7 +314,7 @@ en: {
   book_from:"From", book_per:"USD / person", book_date:"Date", book_trav:"Travelers",
   book_total:"Estimated total", book_btn:"Book on WhatsApp", book_share:"Share / Get a quote",
   book_cancel:"Free cancellation up to 24h before",
-  book_help: w=>`Questions? Call us at <a href="tel:+${w.phone}">${w.phoneDisplay}</a> or message us on WhatsApp at <a href="https://wa.me/${w.wa}" target="_blank">${w.waDisplay}</a>. Local support 24/7.`,
+  book_help: w=>`Questions? Call us or message us on WhatsApp at <a href="https://wa.me/${w.wa}" target="_blank">${w.waDisplay}</a>. Local support 24/7.`,
   person:"person", people:"people", group9:"9+ people (group)",
   ey_rel:"You may also like", ti_rel:"Similar adventures",
   nf_t:"Excursion not found", nf_btn:"View all excursions",

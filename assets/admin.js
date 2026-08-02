@@ -164,7 +164,6 @@ async function initPanel(){
     email: WAOOO.email, facebook: WAOOO.facebook,
   };
 
-  $('sPhone').value = DB.settings.phone;
   $('sWa').value = DB.settings.wa;
   $('sEmail').value = DB.settings.email;
   $('sFb').value = DB.settings.facebook;
@@ -346,13 +345,13 @@ async function delTour(id){
 
 /* ---------- settings ---------- */
 async function saveSettings(){
-  const phone = $('sPhone').value.replace(/\D/g,'');
+  /* un solo número de contacto: se guarda en los dos campos por compatibilidad */
   const wa = $('sWa').value.replace(/\D/g,'');
   const email = $('sEmail').value.trim();
   const fb = $('sFb').value.trim();
-  if(!phone || !wa){ toast('⚠️ Teléfono y WhatsApp son obligatorios'); return; }
+  if(!wa){ toast('⚠️ El número de contacto es obligatorio'); return; }
   DB.settings = {
-    phone, phoneDisplay: fmtDisplay(phone),
+    phone: wa, phoneDisplay: fmtDisplay(wa),
     wa, waDisplay: fmtDisplay(wa),
     email: email || DB.settings.email,
     facebook: fb || DB.settings.facebook,

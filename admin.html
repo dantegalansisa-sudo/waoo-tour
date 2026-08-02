@@ -6,6 +6,9 @@
 <title>Panel de Administración · WAOOO Tours</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" href="assets/waoo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 <style>
 /* ===== estilos del panel ===== */
@@ -194,13 +197,10 @@ body{background:#f2efe9}
         <h2>Datos de contacto</h2>
         <p class="hint">Estos datos aparecen en el encabezado, el pie de página y los botones de reserva de toda la web.</p>
         <div class="f-grid">
-          <div class="f-field">
-            <label>Teléfono de llamadas (solo dígitos, con el 1)</label>
-            <input type="text" id="sPhone" placeholder="18294312369">
-          </div>
-          <div class="f-field">
-            <label>WhatsApp de reservas (solo dígitos, con el 1)</label>
+          <div class="f-field full">
+            <label>Teléfono / WhatsApp de contacto (solo dígitos, con el 1)</label>
             <input type="text" id="sWa" placeholder="18296318364">
+            <span class="up-hint">Es el número que se muestra en toda la web y al que llegan las reservas.</span>
           </div>
           <div class="f-field full">
             <label>Email</label>

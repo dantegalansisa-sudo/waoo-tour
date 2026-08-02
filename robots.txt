@@ -1,0 +1,6 @@
+# WAOOO Tours and Adventures · Punta Cana
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://www.waoootoursrd.com/sitemap.xml
