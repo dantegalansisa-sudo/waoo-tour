@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        { "type": "host", "value": "www.waoootoursrd.com" }
+      ],
+      "destination": "https://waoootoursrd.com/:path*",
+      "statusCode": 301
+    }
+  ]
+}

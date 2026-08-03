@@ -12,7 +12,7 @@ tours nuevos, primero descarga el respaldo desde el panel admin
 """
 import io, os, re, datetime
 
-DOMINIO = "https://www.waoootoursrd.com"
+DOMINIO = "https://waoootoursrd.com"
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def main():

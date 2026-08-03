@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://www.waoootoursrd.com/sitemap.xml
+Sitemap: https://waoootoursrd.com/sitemap.xml

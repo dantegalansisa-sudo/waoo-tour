@@ -1,0 +1,19 @@
+COMO ACTIVAR LA REDIRECCION www -> sin www
+==========================================
+
+ESTADO ACTUAL: waoootoursrd.com redirige (308) HACIA www.waoootoursrd.com.
+Esa redireccion esta configurada en el PANEL DE VERCEL, no en el codigo.
+
+PASO 1 (obligatorio, en Vercel):
+  Project waoo-tour -> Settings -> Domains
+  Deja "waoootoursrd.com" como dominio principal (Set as Primary / Redirect a
+  ese dominio) y que "www.waoootoursrd.com" quede redirigiendo hacia el.
+  Con esto Vercel ya hace la redireccion permanente por su cuenta.
+
+PASO 2 (opcional, en el codigo):
+  Renombrar  vercel.json.listo  ->  vercel.json  y hacer push.
+  Ese archivo fuerza el codigo 301 exacto para el trafico con www.
+
+IMPORTANTE: no hagas el PASO 2 antes del PASO 1. Si el panel sigue mandando
+el dominio sin www hacia www, y el codigo manda www hacia sin www, se crea un
+bucle infinito de redirecciones y la web deja de cargar.
