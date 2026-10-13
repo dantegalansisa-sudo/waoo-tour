@@ -216,7 +216,7 @@ function buildFooter(){
       <span>© ${'2026'} WAOOO Tours and Adventures · Punta Cana. ${T.foot_rights}</span>
       <div class="foot-pay"><span>VISA</span><span>MASTERCARD</span><span>AMEX</span><span>CASH</span></div>
     </div>
-    <div class="foot-credit">${T.foot_credit} <a href="https://nexixstudio.com" target="_blank" rel="noopener">NEXIX Studio</a></div>
+    <div class="foot-credit">${T.foot_credit} <a href="https://nexixtechstudio.com" target="_blank" rel="noopener">nexixtechstudio.com</a></div>
   </div></footer>`;
   updateFavCount();
 }
